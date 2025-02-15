@@ -1,4 +1,5 @@
 import WebSocket from 'ws';
+import { initializeGame } from './gameController';
 
 interface Player {
   ws: WebSocket;
@@ -8,8 +9,6 @@ interface Player {
 const waitingPlayers: Player[] = [];
 
 export const handleConnection = (ws: WebSocket) => {
-  console.log('New player connected');
-
   ws.send(JSON.stringify({ message: 'Welcome to the game server!' }));
 
   ws.on('message', (message) => {
@@ -25,31 +24,29 @@ export const handleConnection = (ws: WebSocket) => {
   });
 
   ws.on('close', () => {
-    console.log('Player disconnected');
     removePlayer(ws);
   });
 };
 
 const matchPlayers = (ws: WebSocket, playerId: string) => {
-  const player: Player = { ws, id: playerId };
+    const player: Player = { ws, id: playerId };
 
-  if (waitingPlayers.length > 0) {
-    const opponent = waitingPlayers.pop();
-    if (opponent) {
-      startGame(player, opponent);
+    // Prevent duplicate waiting players
+    if (waitingPlayers.some(p => p.id === playerId)) {
+        return;
     }
-  } else {
-    waitingPlayers.push(player);
-    ws.send(JSON.stringify({ type: 'WAITING', message: 'Waiting for another player...' }));
-  }
+
+    if (waitingPlayers.length > 0) {
+        const opponent = waitingPlayers.pop();
+    if (opponent) {
+        initializeGame(player, opponent)
+    }
+    } else {
+        waitingPlayers.push(player);
+        ws.send(JSON.stringify({ type: 'WAITING', message: 'Waiting for another player...' }));
+    }
 };
 
-const startGame = (player1: Player, player2: Player) => {
-  console.log(`Matched ${player1.id} with ${player2.id}`);
-
-  player1.ws.send(JSON.stringify({ type: 'START_GAME', opponent: player2.id }));
-  player2.ws.send(JSON.stringify({ type: 'START_GAME', opponent: player1.id }));
-};
 
 const removePlayer = (ws: WebSocket) => {
   const index = waitingPlayers.findIndex((player) => player.ws === ws);
