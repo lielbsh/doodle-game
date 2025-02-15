@@ -4,11 +4,13 @@ class DrawingClass {
     player_id: string;
     game_id: number;
     created_at: Date;
+    word: string;
   
-    constructor(player_id: string, game_id: number) {
+    constructor(player_id: string, game_id: number, word: string) {
       this.player_id = player_id;
       this.game_id = game_id;
       this.created_at = new Date();
+      this.word = word;
     }
   
     // Add a new stroke to the drawing
@@ -16,15 +18,23 @@ class DrawingClass {
         this.strokes.push({ x, y });
       }
   
-    // Mark the drawing as finished
+      // Mark the drawing as finished and send it to the backend
     setDrawing(): void {
-      // send it to the server.
-      console.log("Drawing finished", this);
+        const drawingData = JSON.stringify(this.strokes);  
+        const drawingPayload = {
+            playerId: this.player_id,
+            drawingData,
+            word: this.word
+        };
+    
+        // WebSocket communication 
+        console.log("Sending drawing data to server", drawingPayload);
+        // WebSocket.send(drawingPayload);  // Send this data to your backend
     }
   
     // Clear all strokes (e.g., if the user wants to start over)
     clearDrawing(): void {
       this.strokes = [];
     }
-  }
+}
   

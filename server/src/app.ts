@@ -3,6 +3,7 @@ const app = express();
 import WebSocket from 'ws';
 import http from 'http';
 import dotenv from 'dotenv';
+import promisePool from './db'; 
 
 dotenv.config();
 const server = http.createServer();
