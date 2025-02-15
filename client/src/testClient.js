@@ -31,7 +31,7 @@ function handleMessage(ws, message, player) {
         // Simulate drawing submission after 5 seconds
         setTimeout(() => {
             console.log(`${player} submits drawing`);
-            ws.send(JSON.stringify({ type: 'SUBMIT_DRAWING', data: `drawing-of-${data.word}` }));
+            ws.send(JSON.stringify({ type: 'SUBMIT_DRAWING', drawing: `drawing-of-${data.word}` }));
         }, 5000);
     }
 

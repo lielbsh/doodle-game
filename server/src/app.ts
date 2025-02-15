@@ -17,9 +17,10 @@ wss.on('connection', (ws) => {
   // Listen for game-related messages
   ws.on('message', (message) => {
     try {
-      handleGameMessage(ws, message);
+        const parsedMessage = JSON.parse(message.toString()); // Ensure JSON parsing
+        handleGameMessage(ws, parsedMessage);
     } catch (error) {
-      console.error(error);
+        console.error("Error parsing message:", error);
     }
   });
   

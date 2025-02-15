@@ -19,13 +19,20 @@ const activeGames: GameSession[] = [];
 
 
 export const handleGameMessage = (ws: WebSocket, message: any) => {
+    console.log("Received game message:", message);
+
     const game = activeGames.find((g) => g.player1.ws === ws || g.player2.ws === ws);
-    if (!game) return;
-  
+    if (!game) {
+        console.log('no game')
+        return
+    };  
+    
     if (message.type === 'SUBMIT_DRAWING') {
-      handleDrawing(game, ws, message.data);
+        console.log('drawing recived in backend')  
+        handleDrawing(game, ws, message.data);
+
     } else if (message.type === 'SUBMIT_GUESS') {
-      handleGuess(game, ws, message.guess);
+        handleGuess(game, ws, message.guess);
     }
 };
 
