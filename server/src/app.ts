@@ -11,12 +11,12 @@ const wss = new WebSocket.Server({ server });
 
 wss.on('connection', (ws) => {
   console.log('New client connected');
-  handleConnection(ws, wss)
+  handleConnection(ws);
 
   // Listen for game-related messages
-  ws.on('message', (message) => {
-    // handleGameMessage(ws, message);
-  });
+  // ws.on('message', (message) => {
+  //   handleGameMessage(ws, message);
+  // });
   
   // Handle client disconnection
   ws.on('close', () => {
