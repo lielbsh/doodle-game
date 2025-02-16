@@ -5,13 +5,13 @@ const player2 = new WebSocket("ws://localhost:8080");
 
 player1.on('open', () => {
     console.log('Player 1 connected');
-    player1.send(JSON.stringify({ type: 'JOIN_GAME', playerId: 'player1' }));
+    player1.send(JSON.stringify({ type: 'JOIN_GAME', playerId: 'player1ID', playerName: 'player1'  }));
 });
 
 player2.on('open', () => {
     console.log('Player 2 connected');
     setTimeout(() => {
-        player2.send(JSON.stringify({ type: 'JOIN_GAME', playerId: 'player2' }));
+        player2.send(JSON.stringify({ type: 'JOIN_GAME', playerId: 'player2ID', playerName: 'player2' }));
     }, 1000);
 });
 

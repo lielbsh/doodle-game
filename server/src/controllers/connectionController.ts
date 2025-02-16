@@ -1,10 +1,6 @@
 import WebSocket from 'ws';
 import { startGame } from './gameController';
-
-interface Player {
-  ws: WebSocket;
-  id: string;
-}
+import { Player } from '../models/Player';
 
 const waitingPlayers: Player[] = [];
 
@@ -16,7 +12,7 @@ export const handleConnection = (ws: WebSocket) => {
       const data = JSON.parse(message.toString());
 
       if (data.type === 'JOIN_GAME') {
-        matchPlayers(ws, data.playerId);
+        matchPlayers(ws, data.playerId, data.playerName);
       }
     } catch (error) {
       console.error('Invalid message format', error);
@@ -28,8 +24,8 @@ export const handleConnection = (ws: WebSocket) => {
   });
 };
 
-const matchPlayers = (ws: WebSocket, playerId: string) => {
-    const player: Player = { ws, id: playerId };
+const matchPlayers = (ws: WebSocket, playerId: string, playerName: string) => {
+    const player = new Player(ws, playerId, playerName);
 
     // Prevent duplicate waiting players
     if (waitingPlayers.some(p => p.id === playerId)) {
