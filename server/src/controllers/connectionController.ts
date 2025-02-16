@@ -1,5 +1,5 @@
 import WebSocket from 'ws';
-import { initializeGame } from './gameController';
+import { startGame } from './gameController';
 
 interface Player {
   ws: WebSocket;
@@ -39,7 +39,7 @@ const matchPlayers = (ws: WebSocket, playerId: string) => {
     if (waitingPlayers.length > 0) {
         const opponent = waitingPlayers.pop();
     if (opponent) {
-        initializeGame(player, opponent)
+        startGame(player, opponent)
     }
     } else {
         waitingPlayers.push(player);

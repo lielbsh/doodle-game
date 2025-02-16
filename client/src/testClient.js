@@ -21,6 +21,7 @@ player2.on('message', (data) => handleMessage(player2, data.toString(), "Player 
 player1.on('close', () => console.log('Player 1 disconnected'));
 player2.on('close', () => console.log('Player 2 disconnected'));
 
+
 function handleMessage(ws, message, player) {
     console.log(`${player} received:`, message);
     const data = JSON.parse(message);
@@ -40,7 +41,7 @@ function handleMessage(ws, message, player) {
 
         // Simulate guessing the word after 3 seconds
         setTimeout(() => {
-            const guessedWord = Math.random() > 0.5 ? "correctWord" : "wrongGuess";
+            const guessedWord = Math.random() > 0.5 ? "flower" : "flower";
             console.log(`${player} submits guess: ${guessedWord}`);
             ws.send(JSON.stringify({ type: 'SUBMIT_GUESS', guess: guessedWord }));
         }, 3000);

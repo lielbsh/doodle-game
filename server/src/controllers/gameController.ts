@@ -1,4 +1,5 @@
 import WebSocket from 'ws';
+import { getRandomWords } from '../utils/wordUtils';
 
 interface Player {
     ws: WebSocket;
@@ -29,21 +30,21 @@ export const handleGameMessage = (ws: WebSocket, message: any) => {
     
     if (message.type === 'SUBMIT_DRAWING') {
         console.log('drawing recived in backend')  
-        handleDrawing(game, ws, message.data);
+        handleDrawing(game, ws, message.drawing);
 
     } else if (message.type === 'SUBMIT_GUESS') {
         handleGuess(game, ws, message.guess);
     }
 };
 
-export const initializeGame = (player1: Player, player2: Player) => {
+export const startGame = (player1: Player, player2: Player) => {
     console.log(`Game started: ${player1.id} and ${player2.id}`);
-  
+
     const game: GameSession = {
         player1,
         player2,
         round: 1,
-        words: ['flower','house'],
+        words: getRandomWords(1,"easy"), 
         drawings: {},
         guesses: {},
         score: 0,
@@ -51,7 +52,6 @@ export const initializeGame = (player1: Player, player2: Player) => {
 
     activeGames.push(game);
 
-    // Send start game message with words
     player1.ws.send(JSON.stringify({ type: 'START_GAME', word: game.words[0] }));
     player2.ws.send(JSON.stringify({ type: 'START_GAME', word: game.words[1] }));
 };
@@ -59,13 +59,21 @@ export const initializeGame = (player1: Player, player2: Player) => {
 
 const handleDrawing = (game: GameSession, ws: WebSocket, drawing: string) => {
     const player = game.player1.ws === ws ? game.player1 : game.player2;
+    console.log('player:',player.id ,'submit drawing:',drawing);
     game.drawings[player.id] = drawing;
 
     if (Object.keys(game.drawings).length === 2) {
         console.log('Both players submitted drawings, moving to guessing phase.');
 
-        game.player1.ws.send(JSON.stringify({ type: 'GUESSING_PHASE', drawing: game.drawings[game.player2.id] }));
-        game.player2.ws.send(JSON.stringify({ type: 'GUESSING_PHASE', drawing: game.drawings[game.player1.id] }));
+        game.player1.ws.send(JSON.stringify({ 
+            type: 'GUESSING_PHASE', 
+            drawing: game.drawings[game.player2.id]  // Send Player 2's drawing to Player 1
+        }));
+
+        game.player2.ws.send(JSON.stringify({ 
+            type: 'GUESSING_PHASE', 
+            drawing: game.drawings[game.player1.id]  // Send Player 1's drawing to Player 2
+        }));
     }
 };
   
@@ -74,11 +82,46 @@ const handleGuess = (game: GameSession, ws: WebSocket, guess: string) => {
     game.guesses[player.id] = guess;
 
     if (Object.keys(game.guesses).length === 2) {
-        evaluateScores(game);
+        evaluateGame(game);
     }
 };
 
-function evaluateScores(game: GameSession) {
-    throw new Error('Function not implemented.');
-}
+
+const evaluateGame = (game: GameSession) => {
+    const { player1, player2, words, guesses } = game;
+
+    const player1Correct = guesses[player1.id] === words[1].toLowerCase();
+    const player2Correct = guesses[player2.id] === words[0].toLowerCase();
+
+    game.score += (player1Correct ? 1 : 0) + (player2Correct ? 1 : 0);
+    console.log(`Round ${game.round} ended. Score: ${game.score}`);
+
+    player1.ws.send(JSON.stringify({ type: 'GUESS_RESULT', correct: player1Correct }));
+    player2.ws.send(JSON.stringify({ type: 'GUESS_RESULT', correct: player2Correct }));
+
+    player1.ws.send(JSON.stringify({ type: 'SCORE_UPDATE', score: game.score }));
+    player2.ws.send(JSON.stringify({ type: 'SCORE_UPDATE', score: game.score }));
+
+    game.round < 3 ? startNextRound(game) : endGame(game);
+};
+
+const startNextRound = (game: GameSession) => {
+    game.round++;
+    game.drawings = {};
+    game.guesses = {};
+    game.words = getRandomWords(game.round, "easy"); // Replace with word generation logic
+
+    game.player1.ws.send(JSON.stringify({ type: 'START_GAME', round: game.round, word: game.words[0] }));
+    game.player2.ws.send(JSON.stringify({ type: 'START_GAME', round: game.round, word: game.words[1] }));
+
+    console.log(`Starting round ${game.round}`);
+};
+
+const endGame = (game: GameSession) => {
+    game.player1.ws.send(JSON.stringify({ type: 'GAME_OVER', score: game.score }));
+    game.player2.ws.send(JSON.stringify({ type: 'GAME_OVER', score: game.score }));
+
+    activeGames.splice(activeGames.indexOf(game), 1);
+    console.log('Game ended and removed from active sessions.');
+};
 
