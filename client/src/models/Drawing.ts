@@ -1,4 +1,4 @@
-class DrawingClass {
+export class Drawing {
     id?: number;
     strokes: { x: number, y: number }[] = [];
     player_id: string;
