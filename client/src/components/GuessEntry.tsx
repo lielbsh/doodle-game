@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import wsClient from "../utils/wsClient";
 import { Timer } from "../models/Timer";
 
+// interface CanvasProps {
+
+// }
+
 const GuessInput: React.FC = () => {
   const time = 10;
   const [guess, setGuess] = useState<string>("");
@@ -32,7 +36,6 @@ const GuessInput: React.FC = () => {
     if (!hasSubmitted) {
       wsClient.sendGuessMessage(guess.trim());
       setHasSubmitted(true);
-      guessingTimer?.stop(); // Stop the timer after submission
     }
   };
 

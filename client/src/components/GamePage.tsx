@@ -10,6 +10,10 @@ const GamePage: React.FC = () => {
   const player: Player = location.state?.player;
   const [wordToDraw, setWordToDraw] = useState<string>("");
   const [gameState, setGameState] = useState<string>("WAITING");
+  const [score, setScore] = useState<number>(0);
+  const [guessResults, setGuessResults] = useState<
+    { myGuess: boolean[]; myDrawing: boolean[] }[]
+  >([]);
 
   useEffect(() => {
     if (!player) return;
@@ -21,7 +25,21 @@ const GamePage: React.FC = () => {
       } else if (data.type === "GUESSING_PHASE") {
         setGameState("GUESSING_PHASE");
       } else if (data.type === "SCORE_UPDATE") {
-        console.log(`Score updated: ${data.score}`);
+        setScore(data.score);
+      } else if (data.type == "GUESS_RESULT") {
+        let correct = data.correct;
+        let drawingCorrect = false; // need to implement
+        setGuessResults((prev) => {
+          // If the guessResults array is empty, create the first entry
+          const newEntry = {
+            myGuess: prev.length ? [...prev[0].myGuess, correct] : [correct],
+            myDrawing: prev.length
+              ? [...prev[0].myDrawing, drawingCorrect]
+              : [drawingCorrect],
+          };
+
+          return [newEntry]; // Return the updated entry as a single row
+        });
       } else if (data.type === "GAME_OVER") {
         setGameState("GAME_OVER");
         console.log(`Game over. Final score: ${data.score}`);
@@ -36,20 +54,73 @@ const GamePage: React.FC = () => {
   }, [player]);
 
   return (
-    <div>
+    <div className="header">
+      {/* Header Section */}
       <h1>Game Screen</h1>
       <p>{gameState}</p>
-      {gameState === "WAITING" && <h2>Waiting for another player...</h2>}
 
-      <div>
-        <p>Player: {player.name}</p>
-        <p>Word to draw: {wordToDraw}</p>
+      {/* Waiting Message */}
+      {gameState === "WAITING" && (
+        <h2 className="waiting-message">Waiting for another player...</h2>
+      )}
+
+      {/* Guess Results Table */}
+      <div className="guess-results">
+        <h3>Guess Results</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>My Answer</th>
+              <th>Other Player's Answer</th>
+            </tr>
+          </thead>
+          <tbody>
+            {guessResults.length > 0 && (
+              <tr>
+                <td>
+                  {guessResults[0].myGuess.map((res, i) => (
+                    <span key={i}>{res ? "✅" : "❌"} </span>
+                  ))}
+                </td>
+                <td>
+                  {guessResults[0].myDrawing.map((res, i) => (
+                    <span key={i}>{res ? "✅" : "❌"} </span>
+                  ))}
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
 
+      {/* Player Info Section */}
+      <div className="player-info">
+        <p>
+          Score: <strong>{score}</strong>
+        </p>
+        <p>
+          Player: <strong>{player.name}</strong>
+        </p>
+      </div>
+
+      {/* Drawing Phase */}
       {gameState === "DRAWING" && (
-        <Canvas player={player} setGameState={setGameState} />
+        <div className="drawing-phase">
+          <h3>Drawing Phase</h3>
+          <p>
+            Word to draw: <strong>{wordToDraw}</strong>
+          </p>
+          <Canvas player={player} setGameState={setGameState} />
+        </div>
       )}
-      {gameState === "GUESSING_PHASE" && <GuessInput />}
+
+      {/* Guessing Phase */}
+      {gameState === "GUESSING_PHASE" && (
+        <div className="guessing-phase">
+          <h3>Guess the Drawing</h3>
+          <GuessInput />
+        </div>
+      )}
     </div>
   );
 };
