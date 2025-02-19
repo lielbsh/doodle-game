@@ -35,5 +35,5 @@ export const startGame = (player1: Player, player2: Player) => {
     const game = new GameSession(player1, player2);
     activeGames.push(game);
 
-    game.startGame();
+    game.startGame(); // Send the words 
 };

@@ -49,6 +49,7 @@ export class GameSession {
         this.guesses[player.id] = guess;
 
         if (Object.keys(this.guesses).length === 2) {
+            console.log("Both players submitted guesses.");
             this.evaluateGame();
         }
     }
