@@ -1,5 +1,4 @@
-import React, { useRef, useEffect, useState, ReactElement } from "react";
-import { Drawing } from "../models/Drawing";
+import React, { useRef, useEffect, useState } from "react";
 import { Timer } from "../models/Timer";
 import wsClient from "../utils/wsClient";
 import { Player } from "../models/Player";
@@ -11,17 +10,21 @@ interface CanvasProps {
 
 const Canvas: React.FC<CanvasProps> = ({ player, setGameState }) => {
   const time = 15;
-  const [drawingData, setDrawingData] = useState<Drawing>();
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
+  const [drawingStrokes, setDrawingStrokes] = useState<
+    { x: number; y: number }[]
+  >([]);
+  const [isDrawing, setIsDrawing] = useState(false);
   const [timeLeft, setTimeLeft] = useState<number>(time);
   const [timer, setTimer] = useState<Timer | null>(null);
   const [timeUp, setTimeUp] = useState<boolean>(false);
 
   useEffect(() => {
     timer?.stop();
-    // Create and start the timer
     const newTimer = new Timer(time, () => {
       setTimeUp(true);
-      console.log("time up!");
+      console.log("Time's up! Sending drawing...");
     });
     newTimer.start(setTimeLeft);
     setTimer(newTimer);
@@ -33,28 +36,73 @@ const Canvas: React.FC<CanvasProps> = ({ player, setGameState }) => {
     if (timeUp) {
       handleDrawingEnd();
     }
-  });
+  }, [timeUp]);
+
+  useEffect(() => {
+    if (canvasRef.current) {
+      const canvas = canvasRef.current;
+      canvas.width = 500;
+      canvas.height = 300;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.lineWidth = 2;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "black";
+        ctxRef.current = ctx;
+      }
+    }
+  }, []);
+
+  const startDrawing = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    setIsDrawing(true);
+    if (!canvasRef.current || !ctxRef.current) return;
+
+    const rect = canvasRef.current.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    ctxRef.current.beginPath(); // Reset path so it doesn’t connect to the last stroke
+    ctxRef.current.moveTo(x, y); // Move to the new starting point without drawing
+
+    setDrawingStrokes((prev) => [...prev, { x, y }]);
+  };
+
+  const stopDrawing = () => {
+    setIsDrawing(false);
+  };
+
+  const draw = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDrawing || !canvasRef.current || !ctxRef.current) return;
+
+    const rect = canvasRef.current.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    ctxRef.current.lineTo(x, y);
+    ctxRef.current.stroke();
+
+    setDrawingStrokes((prev) => [...prev, { x, y }]);
+  };
 
   const handleDrawingEnd = () => {
     if (!player) return;
-    wsClient.sendDrawingMessage(JSON.stringify(drawingData?.strokes)); // change to drawing data
+    wsClient.sendDrawingMessage(JSON.stringify(drawingStrokes));
 
     timer?.stop();
     setGameState("GUESSING_PHASE");
   };
 
-  if (!player) {
-    return <div>No player found!</div>;
-  }
-
   return (
     <>
       <p>Time: {timeLeft}</p>
-      <div
-        style={{ border: "1px solid black", width: "500px", height: "300px" }}
-      >
-        Canvas Area
-      </div>
+      <canvas
+        ref={canvasRef}
+        style={{ border: "1px solid black", cursor: "crosshair" }}
+        onMouseDown={startDrawing}
+        onMouseMove={draw}
+        onMouseUp={stopDrawing}
+        onMouseLeave={stopDrawing}
+      />
     </>
   );
 };
