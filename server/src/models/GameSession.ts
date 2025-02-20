@@ -27,7 +27,7 @@ export class GameSession {
     }
     
     handleDrawing(player: Player, drawing: string) {
-        console.log(`Player ${player.id} submitted drawing: ${drawing}`);
+        console.log(`Player ${player.id} submitted drawing`);
         this.drawings[player.id] = drawing;
 
         if (Object.keys(this.drawings).length === 2) {
@@ -63,12 +63,19 @@ export class GameSession {
         this.score += (player1Correct ? 1 : 0) + (player2Correct ? 1 : 0);
         console.log(`Round ${this.round} ended. Score: ${this.score}`);
 
-        player1.sendMessage({ type: "GUESS_RESULT", correct: player1Correct });
-        player2.sendMessage({ type: "GUESS_RESULT", correct: player2Correct });
-
-        player1.sendMessage({ type: "SCORE_UPDATE", score: this.score });
-        player2.sendMessage({ type: "SCORE_UPDATE", score: this.score });
-
+        player1.sendMessage({ 
+            type: "ROUND_RESULT", 
+            correct: player1Correct, 
+            guessedWord: guesses[player2.id],
+            score: this.score
+        });
+        player2.sendMessage({ 
+            type: "ROUND_RESULT", 
+            correct: player2Correct, 
+            guessedWord: guesses[player1.id],
+            score: this.score
+        });
+        
         this.round < 3 ? this.startNextRound() : this.endGame();
     }
 

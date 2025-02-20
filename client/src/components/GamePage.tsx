@@ -28,9 +28,10 @@ const GamePage: React.FC = () => {
       } else if (data.type === "GUESSING_PHASE") {
         setGameState("GUESSING_PHASE");
         setSecondPlayerDrawing(JSON.parse(data.drawing));
-      } else if (data.type === "SCORE_UPDATE") {
+      } else if (data.type === "ROUND_RESULT") {
         setScore(data.score);
-      } else if (data.type == "GUESS_RESULT") {
+        let guessedWord = data.guessedWord;
+        console.log("The second player thinks you drew:", guessedWord);
         let correct = data.correct;
         let drawingCorrect = false; // need to implement
         setGuessResults((prev) => {
