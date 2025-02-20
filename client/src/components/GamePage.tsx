@@ -11,6 +11,9 @@ const GamePage: React.FC = () => {
   const [wordToDraw, setWordToDraw] = useState<string>("");
   const [gameState, setGameState] = useState<string>("WAITING");
   const [score, setScore] = useState<number>(0);
+  const [secondPlayerDrawing, setSecondPlayerDrawing] = useState<
+    { x: number; y: number }[] | null
+  >(null);
   const [guessResults, setGuessResults] = useState<
     { myGuess: boolean[]; myDrawing: boolean[] }[]
   >([]);
@@ -24,6 +27,7 @@ const GamePage: React.FC = () => {
         setWordToDraw(data.word);
       } else if (data.type === "GUESSING_PHASE") {
         setGameState("GUESSING_PHASE");
+        setSecondPlayerDrawing(JSON.parse(data.drawing));
       } else if (data.type === "SCORE_UPDATE") {
         setScore(data.score);
       } else if (data.type == "GUESS_RESULT") {
@@ -110,7 +114,12 @@ const GamePage: React.FC = () => {
           <p>
             Word to draw: <strong>{wordToDraw}</strong>
           </p>
-          <Canvas player={player} setGameState={setGameState} />
+          <Canvas
+            player={player}
+            setGameState={setGameState}
+            secondPlayerDrawing={null}
+            gameState={gameState}
+          />
         </div>
       )}
 
@@ -119,6 +128,12 @@ const GamePage: React.FC = () => {
         <div className="guessing-phase">
           <h3>Guess the Drawing</h3>
           <GuessInput />
+          <Canvas
+            player={player}
+            setGameState={setGameState}
+            secondPlayerDrawing={secondPlayerDrawing}
+            gameState={gameState}
+          />
         </div>
       )}
     </div>

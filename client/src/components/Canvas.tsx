@@ -6,9 +6,16 @@ import { Player } from "../models/Player";
 interface CanvasProps {
   player: Player;
   setGameState: (state: string) => void;
+  gameState: string;
+  secondPlayerDrawing: { x: number; y: number }[] | null;
 }
 
-const Canvas: React.FC<CanvasProps> = ({ player, setGameState }) => {
+const Canvas: React.FC<CanvasProps> = ({
+  player,
+  setGameState,
+  gameState,
+  secondPlayerDrawing,
+}) => {
   const time = 15;
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -20,7 +27,10 @@ const Canvas: React.FC<CanvasProps> = ({ player, setGameState }) => {
   const [timer, setTimer] = useState<Timer | null>(null);
   const [timeUp, setTimeUp] = useState<boolean>(false);
 
+  // For drawing phase: start timer.
   useEffect(() => {
+    if (gameState !== "DRAWING") return;
+
     timer?.stop();
     const newTimer = new Timer(time, () => {
       setTimeUp(true);
@@ -30,14 +40,15 @@ const Canvas: React.FC<CanvasProps> = ({ player, setGameState }) => {
     setTimer(newTimer);
 
     return () => newTimer.stop(); // Cleanup timer
-  }, []);
+  }, [gameState]);
 
   useEffect(() => {
-    if (timeUp) {
+    if (timeUp && gameState === "DRAWING") {
       handleDrawingEnd();
     }
-  }, [timeUp]);
+  }, [timeUp, gameState]);
 
+  // Setup canvas context.
   useEffect(() => {
     if (canvasRef.current) {
       const canvas = canvasRef.current;
@@ -52,6 +63,15 @@ const Canvas: React.FC<CanvasProps> = ({ player, setGameState }) => {
       }
     }
   }, []);
+
+  // If in guessing phase, update local drawingStrokes from secondPlayerDrawing.
+  useEffect(() => {
+    if (gameState === "GUESSING_PHASE" && secondPlayerDrawing) {
+      setDrawingStrokes(secondPlayerDrawing);
+      // Optionally, render the received drawing:
+      drawReceivedDrawing(secondPlayerDrawing);
+    }
+  }, [gameState, secondPlayerDrawing]);
 
   const startDrawing = (event: React.MouseEvent<HTMLCanvasElement>) => {
     setIsDrawing(true);
@@ -72,7 +92,13 @@ const Canvas: React.FC<CanvasProps> = ({ player, setGameState }) => {
   };
 
   const draw = (event: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!isDrawing || !canvasRef.current || !ctxRef.current) return;
+    if (
+      gameState !== "DRAWING" ||
+      !isDrawing ||
+      !canvasRef.current ||
+      !ctxRef.current
+    )
+      return;
 
     const rect = canvasRef.current.getBoundingClientRect();
     const x = event.clientX - rect.left;
@@ -90,6 +116,26 @@ const Canvas: React.FC<CanvasProps> = ({ player, setGameState }) => {
 
     timer?.stop();
     setGameState("GUESSING_PHASE");
+  };
+
+  // Function to draw received drawing (guessing phase):
+  const drawReceivedDrawing = (strokes: { x: number; y: number }[]) => {
+    if (canvasRef.current) {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        strokes.forEach((point, index) => {
+          if (index === 0) {
+            ctx.moveTo(point.x, point.y);
+          } else {
+            ctx.lineTo(point.x, point.y);
+          }
+        });
+        ctx.stroke();
+      }
+    }
   };
 
   return (
