@@ -7,7 +7,7 @@ import { Timer } from "../models/Timer";
 // }
 
 const GuessInput: React.FC = () => {
-  const time = 10;
+  const time = 15;
   const [guess, setGuess] = useState<string>("");
   const [timeLeft, setTimeLeft] = useState<number>(time);
   const [guessingTimer, setGuessingTimer] = useState<Timer | null>(null);

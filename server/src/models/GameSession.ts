@@ -62,25 +62,34 @@ export class GameSession {
 
         this.score += (player1Correct ? 1 : 0) + (player2Correct ? 1 : 0);
         console.log(`Round ${this.round} ended. Score: ${this.score}`);
+        
+        this.round++;
 
         player1.sendMessage({ 
             type: "ROUND_RESULT", 
+            otherPlayerWord:words[1],  
             correct: player1Correct, 
             guessedWord: guesses[player2.id],
-            score: this.score
+            score: this.score,
+            round: this.round,
         });
         player2.sendMessage({ 
-            type: "ROUND_RESULT", 
+            type: "ROUND_RESULT",
+            otherPlayerWord:words[0],  
             correct: player2Correct, 
             guessedWord: guesses[player1.id],
-            score: this.score
+            score: this.score,
+            round: this.round,
         });
-        
-        this.round < 3 ? this.startNextRound() : this.endGame();
+
+        if (this.round < 3) {
+            setTimeout(() => this.startNextRound(), 8000);
+        } else {
+            this.endGame();
+        }        
     }
 
     startNextRound() {
-        this.round++;
         this.drawings = {};
         this.guesses = {};
         this.words = getRandomWords(this.round, "easy");
