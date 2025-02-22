@@ -15,6 +15,8 @@ interface CanvasProps {
   setGameState: (state: string) => void;
   secondPlayerDrawing: Point[] | null;
   gameState: string;
+  setTimeLeft: (state: number) => void;
+  time: number;
 }
 
 const Canvas: React.FC<CanvasProps> = ({
@@ -22,6 +24,8 @@ const Canvas: React.FC<CanvasProps> = ({
   setGameState,
   secondPlayerDrawing,
   gameState,
+  setTimeLeft,
+  time,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -29,8 +33,6 @@ const Canvas: React.FC<CanvasProps> = ({
   // Local state for drawing strokes in drawing phase.
   const [drawingStrokes, setDrawingStrokes] = useState<Point[]>([]);
   const [isDrawing, setIsDrawing] = useState(false);
-  const time = 15;
-  const [timeLeft, setTimeLeft] = useState<number>(time);
   const [timer, setTimer] = useState<Timer | null>(null);
   const [timeUp, setTimeUp] = useState<boolean>(false);
 
@@ -38,8 +40,8 @@ const Canvas: React.FC<CanvasProps> = ({
   useEffect(() => {
     if (canvasRef.current) {
       const canvas = canvasRef.current;
-      canvas.width = 500;
-      canvas.height = 300;
+      canvas.width = 800;
+      canvas.height = 500;
       const ctx = canvas.getContext("2d");
       if (ctx) {
         ctx.lineWidth = 2;
@@ -149,7 +151,6 @@ const Canvas: React.FC<CanvasProps> = ({
 
   return (
     <>
-      <p>Time: {timeLeft}</p>
       <canvas
         ref={canvasRef}
         style={{

@@ -11,16 +11,7 @@ const StartRoundModal: React.FC<StartRoundModalProps> = ({
   word,
   round,
 }) => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    if (isOpen) {
-      setIsVisible(true);
-      setTimeout(() => setIsVisible(false), 3000); // Hide after 3s
-    }
-  }, [isOpen]);
-
-  if (!isVisible) return null;
+  if (!isOpen) return null;
 
   return (
     <div

@@ -71,7 +71,7 @@ export class GameSession {
             correct: player1Correct, 
             guessedWord: guesses[player2.id],
             score: this.score,
-            round: this.round,
+            nextRound: this.round,
         });
         player2.sendMessage({ 
             type: "ROUND_RESULT",
@@ -79,11 +79,11 @@ export class GameSession {
             correct: player2Correct, 
             guessedWord: guesses[player1.id],
             score: this.score,
-            round: this.round,
+            nextRound: this.round,
         });
 
-        if (this.round < 3) {
-            setTimeout(() => this.startNextRound(), 8000);
+        if (this.round <= 3) {
+            setTimeout(() => this.startNextRound(), 6000);
         } else {
             this.endGame();
         }        

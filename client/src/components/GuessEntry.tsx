@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import wsClient from "../utils/wsClient";
 import { Timer } from "../models/Timer";
 
-// interface CanvasProps {
+interface GuessInputProps {
+  setTimeLeft: (state: number) => void;
+  time: number;
+}
 
-// }
-
-const GuessInput: React.FC = () => {
-  const time = 15;
+const GuessInput: React.FC<GuessInputProps> = ({ setTimeLeft, time }) => {
   const [guess, setGuess] = useState<string>("");
-  const [timeLeft, setTimeLeft] = useState<number>(time);
+
   const [guessingTimer, setGuessingTimer] = useState<Timer | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
   const [timeUp, setTimeUp] = useState<boolean>(false);
@@ -41,7 +41,6 @@ const GuessInput: React.FC = () => {
 
   return (
     <div>
-      <p>Time left: {timeLeft}</p>
       <input
         type="text"
         value={guess}
