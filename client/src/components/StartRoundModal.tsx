@@ -4,12 +4,14 @@ interface StartRoundModalProps {
   isOpen: boolean;
   word: string;
   round: number;
+  time: number;
 }
 
 const StartRoundModal: React.FC<StartRoundModalProps> = ({
   isOpen,
   word,
   round,
+  time,
 }) => {
   if (!isOpen) return null;
 
@@ -24,7 +26,7 @@ const StartRoundModal: React.FC<StartRoundModalProps> = ({
         <p>Round: {round}/3</p>
         <p>Draw</p>
         <h1>{word}</h1>
-        <p>In under 15 seconds</p>
+        <p>In under {time} seconds</p>
       </div>
     </div>
   );

@@ -12,8 +12,9 @@ const GamePage: React.FC = () => {
   const player: Player = location.state?.player;
   const [wordToDraw, setWordToDraw] = useState<string>("");
   const [gameState, setGameState] = useState<string>("WAITING");
+  const [showRoundResult, setShowRoundResult] = useState<boolean>(false);
 
-  const time = 15;
+  const time = 5;
   const [timeLeft, setTimeLeft] = useState<number>(time);
 
   const [secondPlayerDrawing, setSecondPlayerDrawing] = useState<
@@ -29,6 +30,7 @@ const GamePage: React.FC = () => {
 
   useEffect(() => {
     if (!player) return;
+    setShowRoundResult(false);
 
     const handleMessage = (data: any) => {
       if (data.type === "START_GAME") {
@@ -46,13 +48,7 @@ const GamePage: React.FC = () => {
           score: data.score,
           round: data.nextRound,
         });
-        setGameState("ROUND_RESULT");
-        let guessedWord = data.guessedWord;
-        console.log("The second player thinks you drew:", guessedWord);
-        console.log(
-          "The second player drawing was:",
-          roundResult.otherPlayerWord
-        );
+        setShowRoundResult(true);
       } else if (data.type === "GAME_OVER") {
         setGameState("GAME_OVER");
         console.log(`Game over. Final score: ${data.score}`);
@@ -72,18 +68,17 @@ const GamePage: React.FC = () => {
         isOpen={gameState === "START_GAME"}
         word={wordToDraw}
         round={roundResult.round}
+        time={time}
       />
 
       <div className="header">
-        {/* Header Section */}
-        <h1>{gameState}</h1>
-        <p>Time: {timeLeft}</p>
-
-        {/* Waiting Message */}
+        <div className="timer">
+          <p>Time: {timeLeft}</p>
+        </div>
         {gameState === "WAITING" && (
           <h2 className="waiting-message">Waiting for another player...</h2>
         )}
-
+        {gameState === "DRAWING" && <h2>draw: {wordToDraw}</h2>}
         <div className="player-info">
           <p>
             Score: <strong>{roundResult.score}</strong>
@@ -94,13 +89,8 @@ const GamePage: React.FC = () => {
         </div>
       </div>
 
-      {/* Drawing Phase */}
       {gameState === "DRAWING" && (
         <div className="drawing-phase">
-          <h3>Drawing Phase</h3>
-          <p>
-            Word to draw: <strong>{wordToDraw}</strong>
-          </p>
           <Canvas
             player={player}
             setGameState={setGameState}
@@ -112,11 +102,13 @@ const GamePage: React.FC = () => {
         </div>
       )}
 
-      {/* Guessing Phase */}
       {gameState === "GUESSING_PHASE" && (
         <div className="guessing-phase">
           <h3>Guess the Drawing</h3>
           <GuessInput setTimeLeft={setTimeLeft} time={time} />
+          {showRoundResult && (
+            <p>other player draw: {roundResult.otherPlayerWord}</p>
+          )}
           <Canvas
             player={player}
             setGameState={setGameState}

@@ -54,6 +54,7 @@ const Canvas: React.FC<CanvasProps> = ({
 
   // For drawing phase: start timer.
   useEffect(() => {
+    setTimeLeft(time);
     if (gameState !== "DRAWING") return;
 
     timer?.stop();
@@ -161,8 +162,8 @@ const Canvas: React.FC<CanvasProps> = ({
         onMouseMove={draw}
         onMouseUp={stopDrawing}
         onMouseLeave={stopDrawing}
-        width={500}
-        height={300}
+        width={800}
+        height={500}
       />
     </>
   );
