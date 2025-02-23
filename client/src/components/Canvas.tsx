@@ -40,8 +40,8 @@ const Canvas: React.FC<CanvasProps> = ({
   useEffect(() => {
     if (canvasRef.current) {
       const canvas = canvasRef.current;
-      canvas.width = 800;
-      canvas.height = 500;
+      canvas.width = 1200;
+      canvas.height = 600;
       const ctx = canvas.getContext("2d");
       if (ctx) {
         ctx.lineWidth = 2;
@@ -154,15 +154,23 @@ const Canvas: React.FC<CanvasProps> = ({
     <>
       <canvas
         ref={canvasRef}
+        className={`canvas ${
+          gameState === "DRAWING"
+            ? "drawing-phase"
+            : gameState === "GUESSING_PHASE"
+            ? "guessing-phase"
+            : ""
+        }`}
         style={{
-          border: "1px solid black",
           cursor: gameState === "DRAWING" ? "crosshair" : "default",
+          display: "block",
+          background: "white",
         }}
         onMouseDown={startDrawing}
         onMouseMove={draw}
         onMouseUp={stopDrawing}
         onMouseLeave={stopDrawing}
-        width={800}
+        width={1200}
         height={500}
       />
     </>

@@ -40,15 +40,20 @@ const GuessInput: React.FC<GuessInputProps> = ({ setTimeLeft, time }) => {
   };
 
   return (
-    <div>
+    <div className="guess-container">
       <input
+        className="guess-input"
         type="text"
         value={guess}
         onChange={(e) => setGuess(e.target.value)}
         placeholder="Enter your guess..."
         disabled={hasSubmitted} // Prevents further input after submission
       />
-      <button onClick={handleGuessSubmit} disabled={hasSubmitted}>
+      <button
+        className="guess-button"
+        onClick={handleGuessSubmit}
+        disabled={hasSubmitted}
+      >
         {hasSubmitted ? "Guess Submitted" : "Submit Guess"}
       </button>
     </div>

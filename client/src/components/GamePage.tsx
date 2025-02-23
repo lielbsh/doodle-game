@@ -1,3 +1,4 @@
+import "../styles/GamePage.css";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Canvas from "./Canvas";
@@ -11,9 +12,9 @@ const GamePage: React.FC = () => {
   const location = useLocation();
   const player: Player = location.state?.player;
   const [wordToDraw, setWordToDraw] = useState<string>("");
-  const [gameState, setGameState] = useState<string>("WAITING");
+  const [gameState, setGameState] = useState<string>("DRAWING");
   const [showRoundResult, setShowRoundResult] = useState<boolean>(false);
-
+  const [round, setRound] = useState<number>(1);
   const time = 5;
   const [timeLeft, setTimeLeft] = useState<number>(time);
 
@@ -25,7 +26,6 @@ const GamePage: React.FC = () => {
     guessedWord: "",
     isCorrect: false,
     score: 0,
-    round: 1,
   });
 
   useEffect(() => {
@@ -34,8 +34,9 @@ const GamePage: React.FC = () => {
 
     const handleMessage = (data: any) => {
       if (data.type === "START_GAME") {
-        setGameState("START_GAME");
+        setRound(data.round);
         setWordToDraw(data.word);
+        setGameState("START_GAME");
         setTimeout(() => setGameState("DRAWING"), 5000);
       } else if (data.type === "GUESSING_PHASE") {
         setGameState("GUESSING_PHASE");
@@ -46,7 +47,6 @@ const GamePage: React.FC = () => {
           guessedWord: data.guessedWord,
           isCorrect: data.correct,
           score: data.score,
-          round: data.nextRound,
         });
         setShowRoundResult(true);
       } else if (data.type === "GAME_OVER") {
@@ -64,33 +64,46 @@ const GamePage: React.FC = () => {
 
   return (
     <>
+      <header className="game-header">
+        <div className="round">{round}/3</div>
+        <div className="row">
+          <div className="player-info">
+            <p>
+              Score: <strong>{roundResult.score}</strong>
+            </p>
+            <p>
+              Player: <strong>{player.name}</strong>
+            </p>
+          </div>
+
+          <div className="headline">
+            {gameState === "DRAWING" && (
+              <span>
+                draw: <strong>{wordToDraw}</strong>
+              </span>
+            )}
+            {gameState === "GUESSING_PHASE" && (
+              <span className="fixed-text">Guess the Drawing</span>
+            )}
+          </div>
+
+          <div className="timer">00:0{timeLeft}</div>
+        </div>
+      </header>
+
       <StartRoundModal
         isOpen={gameState === "START_GAME"}
         word={wordToDraw}
-        round={roundResult.round}
+        round={round}
         time={time}
       />
 
-      <div className="header">
-        <div className="timer">
-          <p>Time: {timeLeft}</p>
-        </div>
+      <div className="game-box">
         {gameState === "WAITING" && (
           <h2 className="waiting-message">Waiting for another player...</h2>
         )}
-        {gameState === "DRAWING" && <h2>draw: {wordToDraw}</h2>}
-        <div className="player-info">
-          <p>
-            Score: <strong>{roundResult.score}</strong>
-          </p>
-          <p>
-            Player: <strong>{player.name}</strong>
-          </p>
-        </div>
-      </div>
 
-      {gameState === "DRAWING" && (
-        <div className="drawing-phase">
+        {gameState === "DRAWING" && (
           <Canvas
             player={player}
             setGameState={setGameState}
@@ -99,26 +112,25 @@ const GamePage: React.FC = () => {
             setTimeLeft={setTimeLeft}
             time={time}
           />
-        </div>
-      )}
+        )}
 
-      {gameState === "GUESSING_PHASE" && (
-        <div className="guessing-phase">
-          <h3>Guess the Drawing</h3>
-          <GuessInput setTimeLeft={setTimeLeft} time={time} />
-          {showRoundResult && (
-            <p>other player draw: {roundResult.otherPlayerWord}</p>
-          )}
-          <Canvas
-            player={player}
-            setGameState={setGameState}
-            secondPlayerDrawing={secondPlayerDrawing}
-            gameState={gameState}
-            setTimeLeft={setTimeLeft}
-            time={time}
-          />
-        </div>
-      )}
+        {gameState === "GUESSING_PHASE" && (
+          <>
+            <GuessInput setTimeLeft={setTimeLeft} time={time} />
+            {showRoundResult && (
+              <p>other player draw: {roundResult.otherPlayerWord}</p>
+            )}
+            <Canvas
+              player={player}
+              setGameState={setGameState}
+              secondPlayerDrawing={secondPlayerDrawing}
+              gameState={gameState}
+              setTimeLeft={setTimeLeft}
+              time={time}
+            />
+          </>
+        )}
+      </div>
     </>
   );
 };

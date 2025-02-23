@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Player } from "../models/Player";
+import { Check, X } from "lucide-react";
 
 interface NameEntryModalProps {
   onClose: () => void;
@@ -19,15 +20,19 @@ const NameEntryModal: React.FC<NameEntryModalProps> = ({ onClose }) => {
 
   return (
     <div className="modal">
-      <h2>Enter Your Name</h2>
       <input
         type="text"
         value={nameInput}
         onChange={(e) => setNameInput(e.target.value)}
         placeholder="Your name"
+        onKeyDown={(e) => e.key === "Enter" && handleConfirmName()}
       />
-      <button onClick={handleConfirmName}>Confirm</button>
-      <button onClick={onClose}>Cancel</button>
+      <button type="submit" onClick={handleConfirmName} className="confirm-btn">
+        <Check size={18} />
+      </button>
+      <button onClick={() => onClose()} className="cancel-btn">
+        <X size={18} />
+      </button>
     </div>
   );
 };

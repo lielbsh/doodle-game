@@ -3,5 +3,4 @@ export interface RoundResult{
     guessedWord: string,
     isCorrect: boolean,
     score: number,
-    round: number,
 }

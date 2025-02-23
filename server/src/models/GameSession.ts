@@ -22,8 +22,8 @@ export class GameSession {
 
     startGame() {
         console.log(`Game started: ${this.player1.id} and ${this.player2.id}`);
-        this.player1.sendMessage({ type: "START_GAME", word: this.words[0] });
-        this.player2.sendMessage({ type: "START_GAME", word: this.words[1] });
+        this.player1.sendMessage({ type: "START_GAME", word: this.words[0], round:this.round });
+        this.player2.sendMessage({ type: "START_GAME", word: this.words[1], round:this.round });
     }
     
     handleDrawing(player: Player, drawing: string) {
@@ -63,7 +63,7 @@ export class GameSession {
         this.score += (player1Correct ? 1 : 0) + (player2Correct ? 1 : 0);
         console.log(`Round ${this.round} ended. Score: ${this.score}`);
         
-        this.round++;
+        
 
         player1.sendMessage({ 
             type: "ROUND_RESULT", 
@@ -71,7 +71,6 @@ export class GameSession {
             correct: player1Correct, 
             guessedWord: guesses[player2.id],
             score: this.score,
-            nextRound: this.round,
         });
         player2.sendMessage({ 
             type: "ROUND_RESULT",
@@ -79,10 +78,9 @@ export class GameSession {
             correct: player2Correct, 
             guessedWord: guesses[player1.id],
             score: this.score,
-            nextRound: this.round,
         });
 
-        if (this.round <= 3) {
+        if (this.round < 3) {
             setTimeout(() => this.startNextRound(), 6000);
         } else {
             this.endGame();
@@ -92,6 +90,7 @@ export class GameSession {
     startNextRound() {
         this.drawings = {};
         this.guesses = {};
+        this.round++;
         this.words = getRandomWords(this.round, "easy");
 
         console.log(`Starting round ${this.round}`);
