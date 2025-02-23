@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "../styles/StartRoundModal.css";
 
 interface StartRoundModalProps {
   isOpen: boolean;
@@ -16,64 +17,23 @@ const StartRoundModal: React.FC<StartRoundModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div
-      style={{
-        ...styles.overlay,
-        animation: isOpen ? "fall 0.8s ease-out" : "none",
-      }}
-    >
-      <div style={styles.content}>
-        <p>Round: {round}/3</p>
-        <p>Draw</p>
-        <h1>{word}</h1>
-        <p>In under {time} seconds</p>
+    <div className="overlay">
+      <div className="content">
+        <div className="round-container">
+          <p>Round: {round}/3</p>
+        </div>
+
+        <div className="draw-word-container">
+          <p className="draw-text">Draw</p>
+          <h1 className="word-text">{word}</h1>
+        </div>
+
+        <div className="time-container">
+          <p>In under {time} seconds</p>
+        </div>
       </div>
     </div>
   );
 };
-
-const styles = {
-  overlay: {
-    position: "fixed" as "fixed",
-    top: 0,
-    left: 0,
-    width: "100vw",
-    height: "100vh",
-    backgroundColor: "#fff",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center" as "center",
-    zIndex: 1000,
-  },
-  content: {
-    fontSize: "24px",
-    fontWeight: "bold",
-  },
-  button: {
-    marginTop: "20px",
-    padding: "10px 20px",
-    fontSize: "16px",
-    backgroundColor: "#4285f4",
-    color: "#fff",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-  },
-};
-
-// Inject CSS animation
-const styleTag = document.createElement("style");
-styleTag.innerHTML = `
-  @keyframes fall {
-    from {
-      transform: translateY(-100vh);
-    }
-    to {
-      transform: translateY(0);
-    }
-  }
-`;
-document.head.appendChild(styleTag);
 
 export default StartRoundModal;

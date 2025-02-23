@@ -1,0 +1,90 @@
+@keyframes slideBounce {
+  0% {
+    transform: translateY(-100vh);
+  }
+  60% {
+    transform: translateY(20px);
+  }
+  80% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #ffcc00;
+  color: #fff;
+  font-family: "Dancing Script", cursive;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 1000;
+  animation: slideBounce 1s ease-out;
+}
+
+.content {
+  background-color: transparent;
+  font-family: "Dancing Script", cursive;
+  color: #fff;
+  max-width: 90%;
+  width: 400px;
+}
+
+.round-container p {
+  font-size: 2rem;
+  margin: 0;
+  padding: 25px 0;
+  color: #333;
+}
+
+.draw-word-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  gap: 10px;
+}
+
+.draw-text {
+  font-size: 2.2rem;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.word-text {
+  font-size: 4rem;
+  font-style: italic;
+  color: #fc6daf; /* Color for the word */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.time-container p {
+  font-size: 1.8rem;
+  margin: 10px 0;
+  color: #fff;
+}
+
+@keyframes slideBounce {
+  0% {
+    transform: translateY(-100vh);
+  }
+  60% {
+    transform: translateY(20px);
+  }
+  80% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

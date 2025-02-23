@@ -7,15 +7,16 @@ import wsClient from "../utils/wsClient";
 import GuessInput from "./GuessEntry";
 import { RoundResult } from "../models/RoundResult";
 import StartRoundModal from "./StartRoundModal";
+import Timer from "./Timer";
 
 const GamePage: React.FC = () => {
   const location = useLocation();
   const player: Player = location.state?.player;
   const [wordToDraw, setWordToDraw] = useState<string>("");
-  const [gameState, setGameState] = useState<string>("DRAWING");
+  const [gameState, setGameState] = useState<string>("WAITING");
   const [showRoundResult, setShowRoundResult] = useState<boolean>(false);
   const [round, setRound] = useState<number>(1);
-  const time = 5;
+  const time = 10;
   const [timeLeft, setTimeLeft] = useState<number>(time);
 
   const [secondPlayerDrawing, setSecondPlayerDrawing] = useState<
@@ -37,7 +38,7 @@ const GamePage: React.FC = () => {
         setRound(data.round);
         setWordToDraw(data.word);
         setGameState("START_GAME");
-        setTimeout(() => setGameState("DRAWING"), 5000);
+        setTimeout(() => setGameState("DRAWING"), 5);
       } else if (data.type === "GUESSING_PHASE") {
         setGameState("GUESSING_PHASE");
         setSecondPlayerDrawing(JSON.parse(data.drawing));
@@ -87,7 +88,7 @@ const GamePage: React.FC = () => {
             )}
           </div>
 
-          <div className="timer">00:0{timeLeft}</div>
+          <Timer timeLeft={timeLeft} />
         </div>
       </header>
 

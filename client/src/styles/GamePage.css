@@ -37,6 +37,10 @@
     box-shadow: 0 5px 0 #fc6daf;
 }
 
+.text-red {
+    color: #ff4d4d; 
+}
+
 .headline {
     display: flex;
     justify-content: center;
