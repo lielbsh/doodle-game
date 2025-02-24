@@ -1,6 +1,7 @@
 import WebSocket from 'ws';
-import { startGame } from './gameController';
+import { activeGames, removeFromActiveGames, startGame } from './gameController';
 import { Player } from '../models/Player';
+import { GameSession } from '../models/GameSession';
 
 const waitingPlayers: Player[] = [];
 
@@ -45,8 +46,19 @@ const matchPlayers = (ws: WebSocket, playerId: string, playerName: string) => {
 
 
 const removePlayer = (ws: WebSocket) => {
-  const index = waitingPlayers.findIndex((player) => player.ws === ws);
-  if (index !== -1) {
-    waitingPlayers.splice(index, 1);
+  const playerIndex = waitingPlayers.findIndex((player) => player.ws === ws);
+  if (playerIndex !== -1) {
+    waitingPlayers.splice(playerIndex, 1);
   }
+  
+  // Check if the player is part of an active game
+  const game = activeGames.find((g) => g.player1.ws === ws || g.player2.ws === ws);
+  if (game) {
+    const opponent = game.player1.ws === ws ? game.player2 : game.player1;
+    removeFromActiveGames(game);
+    opponent.ws.send(JSON.stringify({ type: 'GAME_OVER', message: 'Your opponent disconnected.', score: game.score}));
+    console.log('Game ended due to player disconnection.');
+  }
+
 };
+

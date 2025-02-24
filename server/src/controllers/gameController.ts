@@ -2,7 +2,7 @@ import WebSocket from 'ws';
 import { Player } from "../models/Player";
 import { GameSession } from "../models/GameSession";
 
-const activeGames: GameSession[] = [];
+export const activeGames: GameSession[] = [];
 
 export const handleGameMessage = (ws: WebSocket, message: any) => {
     console.log("Received game message:", message);
@@ -29,16 +29,18 @@ export const handleGameMessage = (ws: WebSocket, message: any) => {
 export const startGame = (player1: Player, player2: Player) => {
     console.log(`Game started: ${player1.name} and ${player2.name}`);
 
-    const game = new GameSession(player1, player2, () => {
-        const index = activeGames.indexOf(game);
-        if (index !== -1) {
-            activeGames.splice(index, 1);
-            console.log('Game removed from activeGames.');
-        }
-    });
-
+    const game = new GameSession(player1, player2, () => removeFromActiveGames(game));
 
     activeGames.push(game);
 
     game.startGame(); // Send the words 
 };
+
+export const removeFromActiveGames = (game: GameSession) => {
+    const index = activeGames.indexOf(game);
+    if (index !== -1) {
+      activeGames.splice(index, 1);
+      console.log('Game removed from activeGames.');
+    }
+  };
+  

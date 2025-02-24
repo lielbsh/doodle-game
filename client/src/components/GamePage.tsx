@@ -29,6 +29,7 @@ const GamePage: React.FC = () => {
     isCorrect: false,
     score: 0,
   });
+  const [gameEndMessage, setGameEndMessage] = useState<string>("");
 
   useEffect(() => {
     setShowRoundResult(false);
@@ -57,7 +58,7 @@ const GamePage: React.FC = () => {
         setShowRoundResult(true);
       } else if (data.type === "GAME_OVER") {
         setGameState("GAME_OVER");
-        console.log(`Game over. Final score: ${data.score}`);
+        setGameEndMessage(data.message);
       } else if (data.type === "WAITING") {
         setGameState("WAITING");
       }
@@ -120,6 +121,7 @@ const GamePage: React.FC = () => {
         isOpen={gameState === "GAME_OVER"}
         onPlayAgain={handlePlayAgain}
         score={roundResult.score}
+        message={gameEndMessage}
       />
 
       <div className="game-box">

@@ -7,12 +7,14 @@ interface GameOverProps {
   isOpen: boolean;
   onPlayAgain: () => void;
   score: number;
+  message: string;
 }
 
 const GameOverModal: React.FC<GameOverProps> = ({
   isOpen,
   onPlayAgain,
   score,
+  message,
 }) => {
   const navigate = useNavigate();
   const handleExit = () => {
@@ -26,6 +28,8 @@ const GameOverModal: React.FC<GameOverProps> = ({
     <div className="overlay">
       <div className="content">
         <h1>Game Ended</h1>
+        {message !== "Game ended" && <h2>{message}</h2>}
+
         <p className="score">Score: {score}</p>
 
         <div className="buttons">
