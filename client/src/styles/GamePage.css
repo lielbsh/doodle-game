@@ -41,6 +41,27 @@
     color: #ff4d4d; 
 }
 
+@keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+}
+  
+
+.animate-pulse {
+    animation: pulse 1s infinite;
+}
+  
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
 .headline {
     display: flex;
     justify-content: center;
@@ -92,86 +113,42 @@ canvas {
 .canvas.guessing-phase {
     border-color: #ffcc00;
 }
-
-/* Guess input */
-.guess-container {
-    display: flex;
-    align-items: center;
-    
-    animation: inputAppears 1s forwards;
-  }
   
-.guess-input {
-    font-family: 'Comic Sans MS', sans-serif; 
-    font-size: 18px;
-    padding: 12px 18px;
-    border: 2px solid #ffcc00; 
-    border-radius: 16px;
-    background: #fff9e5; 
-    color: #333;
-    width: 300px;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(255, 204, 0, 0.2);
-    outline: none;
-    animation: inputAnimation 1s ease-out infinite;
-  }
-  
-/* Animation for the input appearing */
-@keyframes inputAppears {
-    0% {
-        opacity: 0;
-        transform: translateY(20px); 
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0); 
-    }
+.message-container {
+  margin-top: 20px;
+  text-align: center;
+  padding: 15px;
+  border-radius: 10px;
+  animation: slideIn 0.5s ease-out forwards;
 }
 
-.guess-input:focus {
-    border-color: #ff9800; 
-    box-shadow: 0 5px 15px rgba(255, 152, 0, 0.5); 
-    transform: scale(1.05); 
+.feedback {
+  font-size: 18px;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  animation: slideIn 0.5s ease-out forwards
+}
+
+.feedback.correct {
+  background-color: #4CAF50; 
+  color: white;
+}
+
+.feedback.wrong {
+  background-color: #f44336; 
+  color: white;
+}
+
+strong {
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  
-  /* Input disabled state */
-.guess-input:disabled {
-    background: #e0e0e0; 
-    cursor: not-allowed;
+  to {
+    opacity: 1;
   }
-  
-  /* Button styling */
-.guess-button {
-    font-family: 'Comic Sans MS', sans-serif;
-    font-size: 18px;
-    padding: 12px 24px;
-    background: #fc6daf; 
-    color: white;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 5px 15px rgba(252, 109, 175, 0.4);
-    transition: all 0.3s ease;
-    outline: none;
-    margin-left: 10px;
-    width: 200px;
-  }
-  
-  /* Button hover effect */
-.guess-button:hover {
-    background: #f9a7d4; 
-    transform: translateY(-5px); 
-  }
-  
-  /* Button disabled state */
-.guess-button:disabled {
-    background: #e0e0e0; 
-    cursor: not-allowed;
-    box-shadow: none;
-  }
-  
-  /* Button active state */
-.guess-button:active {
-    transform: translateY(2px); 
-  }
-  
+}

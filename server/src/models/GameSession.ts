@@ -63,7 +63,7 @@ export class GameSession {
         this.score += (player1Correct ? 1 : 0) + (player2Correct ? 1 : 0);
         console.log(`Round ${this.round} ended. Score: ${this.score}`);
         
-        
+    
 
         player1.sendMessage({ 
             type: "ROUND_RESULT", 
@@ -80,11 +80,13 @@ export class GameSession {
             score: this.score,
         });
 
-        if (this.round < 3) {
-            setTimeout(() => this.startNextRound(), 6000);
-        } else {
-            this.endGame();
-        }        
+        setTimeout(() => {
+            if (this.round < 3) {
+                this.startNextRound();
+            } else {
+                this.endGame();
+            } 
+        }, 6000);       
     }
 
     startNextRound() {

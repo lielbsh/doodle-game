@@ -30,6 +30,10 @@ const GamePage: React.FC = () => {
   });
 
   useEffect(() => {
+    setShowRoundResult(false);
+  }, [round]);
+
+  useEffect(() => {
     if (!player) return;
     setShowRoundResult(false);
 
@@ -38,7 +42,7 @@ const GamePage: React.FC = () => {
         setRound(data.round);
         setWordToDraw(data.word);
         setGameState("START_GAME");
-        setTimeout(() => setGameState("DRAWING"), 5);
+        setTimeout(() => setGameState("DRAWING"), 500);
       } else if (data.type === "GUESSING_PHASE") {
         setGameState("GUESSING_PHASE");
         setSecondPlayerDrawing(JSON.parse(data.drawing));
@@ -117,10 +121,37 @@ const GamePage: React.FC = () => {
 
         {gameState === "GUESSING_PHASE" && (
           <>
-            <GuessInput setTimeLeft={setTimeLeft} time={time} />
+            <div>
+              <GuessInput
+                setTimeLeft={setTimeLeft}
+                time={time}
+                isCorrect={roundResult.isCorrect}
+                showRoundResult={showRoundResult}
+              />
+            </div>
+
+            {/* Show round result feedback only if it's available */}
             {showRoundResult && (
-              <p>other player draw: {roundResult.otherPlayerWord}</p>
+              <div className="message-container">
+                {!roundResult.isCorrect && (
+                  <p className="feedback wrong">
+                    The word was: <strong>{roundResult.otherPlayerWord}</strong>
+                  </p>
+                )}
+
+                {roundResult.guessedWord === wordToDraw ? (
+                  <p className="feedback correct">
+                    Great job! The other player understood your drawing.
+                  </p>
+                ) : (
+                  <p className="feedback wrong">
+                    The other player guessed:{" "}
+                    <strong>{roundResult.guessedWord}</strong>
+                  </p>
+                )}
+              </div>
             )}
+
             <Canvas
               player={player}
               setGameState={setGameState}
