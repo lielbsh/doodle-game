@@ -32,9 +32,8 @@
 
 .content {
   background-color: transparent;
-  font-family: "Dancing Script", cursive;
   color: #fff;
-  max-width: 90%;
+  max-width: 80%;
   width: 400px;
 }
 
@@ -87,4 +86,42 @@
   100% {
     transform: translateY(0);
   }
+}
+
+.content h1 {
+  font-size: 4rem;
+}
+
+.score {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 2rem;
+}
+
+.buttons button {
+  padding: 15px 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: none;
+}
+
+.play-again {
+  background-color: #ff7fbb;
+  color: white;
+  box-shadow: 0 5px 0 #bb526b;
+}
+
+.exit {
+  background-color: #b7b5b5;
+  color: white;
+  box-shadow: 0 5px 0 #767676;
 }

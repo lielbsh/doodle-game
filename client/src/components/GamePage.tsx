@@ -8,6 +8,7 @@ import GuessInput from "./GuessEntry";
 import { RoundResult } from "../models/RoundResult";
 import StartRoundModal from "./StartRoundModal";
 import Timer from "./Timer";
+import GameOverModal from "./GameOver";
 
 const GamePage: React.FC = () => {
   const location = useLocation();
@@ -57,6 +58,8 @@ const GamePage: React.FC = () => {
       } else if (data.type === "GAME_OVER") {
         setGameState("GAME_OVER");
         console.log(`Game over. Final score: ${data.score}`);
+      } else if (data.type === "WAITING") {
+        setGameState("WAITING");
       }
     };
 
@@ -66,6 +69,16 @@ const GamePage: React.FC = () => {
       wsClient.close();
     };
   }, [player]);
+
+  const handlePlayAgain = () => {
+    if (player) {
+      wsClient.sendMessage({
+        type: "JOIN_GAME",
+        playerId: player.id,
+        playerName: player.name,
+      });
+    }
+  };
 
   return (
     <>
@@ -101,6 +114,12 @@ const GamePage: React.FC = () => {
         word={wordToDraw}
         round={round}
         time={time}
+      />
+
+      <GameOverModal
+        isOpen={gameState === "GAME_OVER"}
+        onPlayAgain={handlePlayAgain}
+        score={roundResult.score}
       />
 
       <div className="game-box">

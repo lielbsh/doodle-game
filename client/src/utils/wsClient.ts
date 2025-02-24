@@ -52,13 +52,6 @@ class WebSocketClient {
       });
     }
   
-    sendGameOverMessage(score: number) {
-      this.sendMessage({
-        type: "GAME_OVER",
-        score: score,
-      });
-    }
-  
     close() {
       if (this.socket) {
         this.socket.close();

@@ -9,8 +9,9 @@ export class GameSession {
     drawings: Record<string, string>;
     guesses: Record<string, string>;
     score: number;
+    onGameEnd: () => void;
 
-    constructor(player1: Player, player2: Player) {
+    constructor(player1: Player, player2: Player, onGameEnd: () => void) {
         this.player1 = player1;
         this.player2 = player2;
         this.round = 1;
@@ -18,6 +19,7 @@ export class GameSession {
         this.drawings = {};
         this.guesses = {};
         this.score = 0;
+        this.onGameEnd = onGameEnd;
     }
 
     startGame() {
@@ -62,8 +64,6 @@ export class GameSession {
 
         this.score += (player1Correct ? 1 : 0) + (player2Correct ? 1 : 0);
         console.log(`Round ${this.round} ended. Score: ${this.score}`);
-        
-    
 
         player1.sendMessage({ 
             type: "ROUND_RESULT", 
@@ -104,5 +104,6 @@ export class GameSession {
         console.log("Game ended.");
         this.player1.sendMessage({ type: "GAME_OVER", score: this.score });
         this.player2.sendMessage({ type: "GAME_OVER", score: this.score });
+        this.onGameEnd(); // Notify gameController
     }
 }
