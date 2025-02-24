@@ -22,7 +22,7 @@ const Timer: React.FC<TimerProps> = ({ timeLeft }) => {
 
   return (
     <div className={`timer ${isCritical ? "text-red" : ""}`}>
-      {formatTime(timeLeft)}
+      <p>{formatTime(timeLeft)}</p>
     </div>
   );
 };

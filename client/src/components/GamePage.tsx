@@ -1,6 +1,6 @@
 import "../styles/GamePage.css";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Canvas from "./Canvas";
 import { Player } from "../models/Player";
 import wsClient from "../utils/wsClient";
@@ -9,9 +9,11 @@ import { RoundResult } from "../models/RoundResult";
 import StartRoundModal from "./StartRoundModal";
 import Timer from "./Timer";
 import GameOverModal from "./GameOver";
+import { LogOut } from "lucide-react";
 
 const GamePage: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const player: Player = location.state?.player;
   const [wordToDraw, setWordToDraw] = useState<string>("");
   const [gameState, setGameState] = useState<string>("WAITING");
@@ -19,7 +21,6 @@ const GamePage: React.FC = () => {
   const [round, setRound] = useState<number>(1);
   const time = 10;
   const [timeLeft, setTimeLeft] = useState<number>(time);
-
   const [secondPlayerDrawing, setSecondPlayerDrawing] = useState<
     { x: number; y: number }[] | null
   >(null);
@@ -37,14 +38,13 @@ const GamePage: React.FC = () => {
 
   useEffect(() => {
     if (!player) return;
-    setShowRoundResult(false);
 
     const handleMessage = (data: any) => {
       if (data.type === "START_GAME") {
         setRound(data.round);
         setWordToDraw(data.word);
         setGameState("START_GAME");
-        setTimeout(() => setGameState("DRAWING"), 500);
+        setTimeout(() => setGameState("DRAWING"), 4000);
       } else if (data.type === "GUESSING_PHASE") {
         setGameState("GUESSING_PHASE");
         setSecondPlayerDrawing(JSON.parse(data.drawing));
@@ -81,9 +81,18 @@ const GamePage: React.FC = () => {
     }
   };
 
+  const handleExitGame = () => {
+    wsClient.close();
+    navigate("/");
+    setGameEndMessage("You left the game.");
+  };
+
   return (
     <>
       <header className="game-header">
+        <button className="exit-button" onClick={handleExitGame}>
+          <LogOut />
+        </button>
         <div className="round">{round}/3</div>
         <div className="row">
           <div className="player-info">
@@ -126,7 +135,9 @@ const GamePage: React.FC = () => {
 
       <div className="game-box">
         {gameState === "WAITING" && (
-          <h2 className="waiting-message">Waiting for another player...</h2>
+          <h2 className="waiting-message">
+            Waiting for another player to join the game...
+          </h2>
         )}
 
         {gameState === "DRAWING" && (
@@ -189,3 +200,6 @@ const GamePage: React.FC = () => {
 };
 
 export default GamePage;
+function useNevigate() {
+  throw new Error("Function not implemented.");
+}

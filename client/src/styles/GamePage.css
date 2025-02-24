@@ -8,6 +8,7 @@
     border-bottom: 5px solid #fc6daf;
     font-family: 'Comic Sans MS', cursive;
     width: 100%;
+    position: relative;
   }
 
 .row {
@@ -21,21 +22,35 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    width: 120px; 
+    width: 120px;
+    font-size: 1.2rem;
+}
+
+.exit-button {
+  position: absolute;
+  top: 5px; 
+  right: 5px; 
+  background-color: transparent;
+  color: #211e19;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
 }
 
 .timer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: white;
-    padding: 10px;
     border: 2px solid #211e19;
     border-radius: 8px;
     font-size: 2rem;
     font-weight: bold;
-    text-align: center;
     width: 150px; 
     height: 80px;
     box-shadow: 0 5px 0 #fc6daf;
 }
+
 
 .text-red {
     color: #ff4d4d; 
@@ -69,7 +84,6 @@
     margin-top: 10px;
     font-size: 1.5rem;
     height: 40px; 
-    
     align-items: center;
     justify-content: center;
     transform: translateX(20px);
@@ -90,7 +104,7 @@
     font-size: 1.8rem;
     color: #211e19;
     padding: 40px;
-    
+    font-family: 'Comic Sans MS';
 }
 
 .round {
