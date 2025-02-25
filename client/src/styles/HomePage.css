@@ -116,21 +116,51 @@ input {
         }
 }
 
-/* .confirm-btn {
-    padding: 8px 15px;
-    font-size: 1.5rem;
-    font-weight: bold;
-    background-color: rgb(141, 245, 128);
-    color: #211e19;
-    border: none;
-    border-radius: 25px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0px 8px 0 #60b76b;
-}
 
-.confirm-btn:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 12px 0 #60b76b;
-} */
+/* Help Modal */
+.help-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    z-index: 1000;
+}
+  
+.help-content {
+    background: #fff6e5;
+    padding: 30px;
+    border-radius: 20px;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0px 8px 0 #fc6daf;
+}
+  
+.help-content h2 {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+}
+  
+.help-content p {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+  
+.close-btn {
+    background-color: #fc6daf;
+    color: #fff;
+    border: none;
+    padding: 10px 30px;
+    font-size: 1.5rem;
+    border-radius: 20px;
+    cursor: pointer;
+}
+  
 
 

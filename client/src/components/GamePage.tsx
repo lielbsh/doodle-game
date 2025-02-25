@@ -19,7 +19,7 @@ const GamePage: React.FC = () => {
   const [gameState, setGameState] = useState<string>("WAITING");
   const [showRoundResult, setShowRoundResult] = useState<boolean>(false);
   const [round, setRound] = useState<number>(1);
-  const time = 10;
+  const time = 15;
   const [timeLeft, setTimeLeft] = useState<number>(time);
   const [secondPlayerDrawing, setSecondPlayerDrawing] = useState<
     { x: number; y: number }[] | null
@@ -44,7 +44,7 @@ const GamePage: React.FC = () => {
         setRound(data.round);
         setWordToDraw(data.word);
         setGameState("START_GAME");
-        setTimeout(() => setGameState("DRAWING"), 4000);
+        setTimeout(() => setGameState("DRAWING"), 5000);
       } else if (data.type === "GUESSING_PHASE") {
         setGameState("GUESSING_PHASE");
         setSecondPlayerDrawing(JSON.parse(data.drawing));

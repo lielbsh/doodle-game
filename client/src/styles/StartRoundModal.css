@@ -63,8 +63,8 @@
 .word-text {
   font-size: 4rem;
   font-style: italic;
-  color: #fc6daf; /* Color for the word */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: #fc6daf; 
+  -webkit-text-stroke: 1px #231313;
 }
 
 .time-container p {

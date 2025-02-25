@@ -56,7 +56,7 @@ const removePlayer = (ws: WebSocket) => {
   if (game) {
     const opponent = game.player1.ws === ws ? game.player2 : game.player1;
     removeFromActiveGames(game);
-    opponent.ws.send(JSON.stringify({ type: 'GAME_OVER', message: 'Your opponent disconnected.', score: game.score}));
+    opponent.ws.send(JSON.stringify({ type: 'GAME_OVER', message: 'The other player disconnected.', score: game.score}));
     console.log('Game ended due to player disconnection.');
   }
 

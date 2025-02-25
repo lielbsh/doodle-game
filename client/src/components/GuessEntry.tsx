@@ -56,6 +56,7 @@ const GuessInput: React.FC<GuessInputProps> = ({
         type="text"
         value={guess}
         onChange={(e) => setGuess(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && handleGuessSubmit()}
         placeholder="Enter your guess..."
         disabled={hasSubmitted}
       />
