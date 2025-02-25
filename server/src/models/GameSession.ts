@@ -15,7 +15,7 @@ export class GameSession {
         this.player1 = player1;
         this.player2 = player2;
         this.round = 1;
-        this.words = getRandomWords(this.round,'easy');
+        this.words = getRandomWords(this.round);
         this.drawings = {};
         this.guesses = {};
         this.score = 0;
@@ -93,7 +93,7 @@ export class GameSession {
         this.drawings = {};
         this.guesses = {};
         this.round++;
-        this.words = getRandomWords(this.round, "easy");
+        this.words = getRandomWords(this.round);
 
         console.log(`Starting round ${this.round}`);
         this.player1.sendMessage({ type: "START_GAME", round: this.round, word: this.words[0] });

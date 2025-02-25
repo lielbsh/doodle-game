@@ -2,7 +2,6 @@
 const wordsForGame =  { 
     easy: [
         'apple',
-        'car',
         'tree',
         'flower',
         'sun',
@@ -12,45 +11,88 @@ const wordsForGame =  {
         'house',
         'cat',
         'pencil',
-        'computer',
-        'school',
+        'Fish',
         'banana',
         'window',
-        'beach',
         'table',
         'mountain',
         'rainbow',
         'clock',
-        
+        'Ice cream',
+        'Butterfly',
+        'Cloud ',
+        'umbrella',
+        'Cloud',
+        'Ball',
+        'Snake',
+        'Robot',
+        'Hat',
     ],
     medium: [
-        'microscope',
+        'Watermelon',
         'skyscraper',
-        'helicopter',
         'volcano',
+        'school',
         'astronaut',
         'dinosaur',
         'penguin',
         'bicycle',
-        'laboratory',
+        'Guitar ',
+        'Castle',
+        'Rocket',
+        'car',
+        'Boat',
+        'computer',
+        'swings',
+        'Roller coaster',
+        'hot air ballon',
+        'snail',
+        'beach',
+        'Bunny',
+        'coffe',
+        'Giraffe',
+        'Bridge',
+        'Candle',
+        'Ladder',
+        'Compass',
+        'Key',
+        'Snowman',
     ],
     hard: [
-        'microscope',
-        'skyscraper',
         'helicopter',
         'volcano',
         'astronaut',
         'dinosaur',
         'penguin',
         'bicycle',
-        'laboratory',
+        'Octopus',
+        'Unicorn',
+        'Spaceship',
+        'Dragon',
+        'Lighthouse',
+        'squirrel',
+        'tiger',
+        'truck',
+        'Alien',
+        'microscope',
+        'bear',
+        'Submarine',
+        'Ferris wheel',
+        'horse',
     ],
 };
 
-export const getRandomWords = (round: number, difficulty: keyof typeof wordsForGame ): [string,string] => {
+export const getRandomWords = (round: number): [string,string] => {
+    const difficulties = ['easy', 'medium', 'hard'] as const;
+    const difficulty = difficulties[round - 1];
     const words = wordsForGame[difficulty];
+
     const word1 = words[Math.floor((Math.random() * words.length))]
-    const word2 = words[Math.floor((Math.random() * words.length))]
+    let word2 = word1;
+    while (word2 === word1) {
+        word2 = words[Math.floor(Math.random() * words.length)];
+    }
+
     return [word1,word2];
 };
 
