@@ -91,7 +91,7 @@ const GamePage: React.FC = () => {
     <>
       <header className="game-header">
         <button className="exit-button" onClick={handleExitGame}>
-          <LogOut />
+          <LogOut size={30} />
         </button>
         <div className="round">{round}/3</div>
         <div className="row">

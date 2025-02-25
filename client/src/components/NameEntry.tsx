@@ -27,11 +27,12 @@ const NameEntryModal: React.FC<NameEntryModalProps> = ({ onClose }) => {
         placeholder="Your name"
         onKeyDown={(e) => e.key === "Enter" && handleConfirmName()}
       />
-      <button type="submit" onClick={handleConfirmName} className="confirm-btn">
-        <Check size={18} />
-      </button>
-      <button onClick={() => onClose()} className="cancel-btn">
-        <X size={18} />
+      <button
+        type="submit"
+        onClick={handleConfirmName}
+        className="start-button bn-green"
+      >
+        Start
       </button>
     </div>
   );
