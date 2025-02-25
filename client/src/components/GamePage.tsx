@@ -10,6 +10,7 @@ import StartRoundModal from "./StartRoundModal";
 import Timer from "./Timer";
 import GameOverModal from "./GameOver";
 import { LogOut } from "lucide-react";
+import { playSound } from "../utils/soundUtils";
 
 const GamePage: React.FC = () => {
   const location = useLocation();
@@ -19,7 +20,7 @@ const GamePage: React.FC = () => {
   const [gameState, setGameState] = useState<string>("WAITING");
   const [showRoundResult, setShowRoundResult] = useState<boolean>(false);
   const [round, setRound] = useState<number>(1);
-  const time = 15;
+  const time = 7;
   const [timeLeft, setTimeLeft] = useState<number>(time);
   const [secondPlayerDrawing, setSecondPlayerDrawing] = useState<
     { x: number; y: number }[] | null
@@ -41,6 +42,9 @@ const GamePage: React.FC = () => {
 
     const handleMessage = (data: any) => {
       if (data.type === "START_GAME") {
+        if (gameState === "WAITING") {
+          playSound("start");
+        }
         setRound(data.round);
         setWordToDraw(data.word);
         setGameState("START_GAME");
@@ -82,6 +86,7 @@ const GamePage: React.FC = () => {
   };
 
   const handleExitGame = () => {
+    playSound("notification");
     wsClient.close();
     navigate("/");
     setGameEndMessage("You left the game.");
@@ -135,9 +140,19 @@ const GamePage: React.FC = () => {
 
       <div className="game-box">
         {gameState === "WAITING" && (
-          <h2 className="waiting-message">
-            Waiting for another player to join the game...
-          </h2>
+          <>
+            <h2 className="waiting-message">
+              Waiting for another player to join the game...
+            </h2>
+            <Canvas
+              player={player}
+              setGameState={setGameState}
+              secondPlayerDrawing={null}
+              gameState={gameState}
+              setTimeLeft={setTimeLeft}
+              time={time}
+            />
+          </>
         )}
 
         {gameState === "DRAWING" && (

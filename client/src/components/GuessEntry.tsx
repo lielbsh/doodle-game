@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import wsClient from "../utils/wsClient";
 import { Timer } from "../models/Timer";
 import "../styles/GuessEntry.css";
+import { playSound } from "../utils/soundUtils";
 
 interface GuessInputProps {
   setTimeLeft: (state: number) => void;
@@ -62,7 +63,10 @@ const GuessInput: React.FC<GuessInputProps> = ({
       />
       <button
         className="guess-button"
-        onClick={handleGuessSubmit}
+        onClick={() => {
+          handleGuessSubmit();
+          playSound("click");
+        }}
         disabled={hasSubmitted}
       >
         {hasSubmitted ? "Guess Submitted" : "Submit Guess"}

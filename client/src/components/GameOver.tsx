@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../styles/StartRoundModal.css";
 import { useNavigate } from "react-router-dom";
 import wsClient from "../utils/wsClient";
+import { playSound } from "../utils/soundUtils";
 
 interface GameOverProps {
   isOpen: boolean;
@@ -17,6 +18,15 @@ const GameOverModal: React.FC<GameOverProps> = ({
   message,
 }) => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (message !== "Game ended") {
+      playSound("notification");
+    } else {
+      playSound("endGame");
+    }
+  }, [message]);
+
   const handleExit = () => {
     wsClient.close(); // Optional: close WebSocket if needed
     navigate("/");
@@ -28,7 +38,12 @@ const GameOverModal: React.FC<GameOverProps> = ({
     <div className="overlay">
       <div className="content">
         <h1>Game Ended</h1>
-        {message !== "Game ended" && <h2>{message}</h2>}
+        {message !== "Game ended" && (
+          <>
+            <h2>{message}</h2>
+            {playSound("notification")}
+          </>
+        )}
 
         <p className="score">Score: {score}</p>
 

@@ -54,6 +54,7 @@ const Canvas: React.FC<CanvasProps> = ({
 
   // For drawing phase: start timer.
   useEffect(() => {
+    if (gameState === "WAITING") return;
     setTimeLeft(time);
     if (gameState !== "DRAWING") return;
 
@@ -85,7 +86,7 @@ const Canvas: React.FC<CanvasProps> = ({
 
   // Drawing functions for drawing phase:
   const startDrawing = (event: React.MouseEvent<HTMLCanvasElement>) => {
-    if (gameState !== "DRAWING") return;
+    if (gameState === "GUESSING_PHASE") return;
     setIsDrawing(true);
     if (!canvasRef.current || !ctxRef.current) return;
 
@@ -101,10 +102,10 @@ const Canvas: React.FC<CanvasProps> = ({
 
   const draw = (event: React.MouseEvent<HTMLCanvasElement>) => {
     if (
-      gameState !== "DRAWING" ||
       !isDrawing ||
       !canvasRef.current ||
-      !ctxRef.current
+      !ctxRef.current ||
+      (gameState !== "DRAWING" && gameState !== "WAITING")
     )
       return;
 
@@ -119,7 +120,7 @@ const Canvas: React.FC<CanvasProps> = ({
   };
 
   const stopDrawing = () => {
-    if (gameState !== "DRAWING") return;
+    if (gameState === "GUESSING_PHASE") return;
     setIsDrawing(false);
   };
 
@@ -162,7 +163,8 @@ const Canvas: React.FC<CanvasProps> = ({
             : ""
         }`}
         style={{
-          cursor: gameState === "DRAWING" ? "crosshair" : "default",
+          cursor:
+            gameState === "DRAWING" || "WAITING" ? "crosshair" : "default",
           display: "block",
           background: "white",
         }}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Player } from "../models/Player";
-import { Check, X } from "lucide-react";
+import { playSound } from "../utils/soundUtils";
 
 interface NameEntryModalProps {
   onClose: () => void;
@@ -13,6 +13,7 @@ const NameEntryModal: React.FC<NameEntryModalProps> = ({ onClose }) => {
 
   const handleConfirmName = () => {
     if (nameInput.trim()) {
+      playSound("start");
       const newPlayer = new Player(nameInput.trim());
       navigate("/game", { state: { player: newPlayer } }); // Pass player via state
     }

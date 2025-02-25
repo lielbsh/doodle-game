@@ -1,3 +1,5 @@
+import { stopAllSounds, stopSound } from "../utils/soundUtils";
+
 export class Timer {
     private time: number;
     private intervalId: NodeJS.Timeout | null = null;
@@ -24,6 +26,7 @@ export class Timer {
       if (this.intervalId) {
         clearInterval(this.intervalId);
         this.intervalId = null;
+        stopSound('timer');
       }
     }
   

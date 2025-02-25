@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { playSound, stopAllSounds } from "../utils/soundUtils";
 
 interface TimerProps {
   timeLeft: number;
@@ -9,6 +10,7 @@ const Timer: React.FC<TimerProps> = ({ timeLeft }) => {
 
   useEffect(() => {
     setIsCritical(timeLeft < 5);
+    if (timeLeft == 5) playSound("timer");
   }, [timeLeft]);
 
   const formatTime = (seconds: number) => {

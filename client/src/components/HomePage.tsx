@@ -3,26 +3,36 @@ import { useNavigate } from "react-router-dom";
 import NameEntryModal from "../components/NameEntry";
 import "../styles/HomePage.css";
 import { LogOut, X } from "lucide-react";
+import { playSound } from "../utils/soundUtils";
 
 const HomePage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
 
   const openModal = () => {
+    playSound("click");
     setIsModalOpen(true);
+  };
+
+  const toggleInfoModal = () => {
+    playSound("click");
+    setIsHelpModalOpen(!isHelpModalOpen);
   };
 
   return (
     <div className="container">
       <header className="app-header">
-        <button
-          className="button bn-pink help-btn"
-          onClick={() => setIsHelpModalOpen(true)}
-        >
+        <button className="button bn-pink help-btn" onClick={toggleInfoModal}>
           ?
         </button>
         {isModalOpen && (
-          <button className="exit-button" onClick={() => setIsModalOpen(false)}>
+          <button
+            className="exit-button"
+            onClick={() => {
+              setIsModalOpen(false);
+              playSound("click");
+            }}
+          >
             <LogOut size={30} />
           </button>
         )}
@@ -36,10 +46,7 @@ const HomePage: React.FC = () => {
             <p> When time runs out, guess the other player’s drawing.</p>
             <p> Earn 1 point for each correct guess.</p>
             <p> There are 3 rounds — work together for the highest score.</p>
-            <button
-              onClick={() => setIsHelpModalOpen(false)}
-              className="close-btn"
-            >
+            <button onClick={toggleInfoModal} className="close-btn">
               Got it!
             </button>
           </div>

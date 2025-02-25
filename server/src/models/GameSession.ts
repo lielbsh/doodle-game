@@ -102,7 +102,7 @@ export class GameSession {
 
     endGame() {
         console.log("Game ended.");
-        this.player1.sendMessage({ type: "GAME_OVER", score: this.score });
+        this.player1.sendMessage({ type: "GAME_OVER", message:"Game ended", score: this.score });
         this.player2.sendMessage({ type: "GAME_OVER", message:"Game ended" ,score: this.score });
         this.onGameEnd(); // Notify gameController
     }
