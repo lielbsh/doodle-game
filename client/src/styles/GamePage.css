@@ -134,11 +134,13 @@ canvas {
     border-color: #ffcc00;
 }
 
-.clear {
+.bn-clear {
   display: inline-block;
   cursor: pointer;
+  background-color: transparent;
+  border: none;
 }
-.clear:hover {
+.bn-clear:hover {
   opacity: 0.7; 
   transition: opacity 0.1s ease;
 }

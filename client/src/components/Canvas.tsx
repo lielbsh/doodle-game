@@ -75,7 +75,7 @@ const Canvas: React.FC<CanvasProps> = ({
     }
   }, [timeUp, gameState]);
 
-  // If in guessing phase, update local drawingStrokes from secondPlayerDrawing and draw it.
+  // Update local drawingStrokes from secondPlayerDrawing and draw it.
   useEffect(() => {
     if (gameState === "GUESSING_PHASE" && secondPlayerDrawing) {
       setDrawingStrokes(secondPlayerDrawing);
@@ -152,22 +152,25 @@ const Canvas: React.FC<CanvasProps> = ({
 
   return (
     <>
-      <div className="clear">
-        <Eraser
-          onClick={() => {
-            setDrawingStrokes([]);
-            if (canvasRef.current && ctxRef.current) {
-              const ctx = ctxRef.current;
-              ctx.clearRect(
-                0,
-                0,
-                canvasRef.current.width,
-                canvasRef.current.height
-              );
-            }
-          }}
-        />
-      </div>
+      <button
+        className="bn-clear"
+        onClick={() => {
+          setDrawingStrokes([]);
+          if (canvasRef.current && ctxRef.current) {
+            const ctx = ctxRef.current;
+            ctx.clearRect(
+              0,
+              0,
+              canvasRef.current.width,
+              canvasRef.current.height
+            );
+          }
+        }}
+        disabled={gameState === "GUESSING_PHASE"} // Disable button when in "GUESSING_PHASE"
+      >
+        <Eraser />
+      </button>
+
       <div className="canvas-container">
         <canvas
           ref={canvasRef}
