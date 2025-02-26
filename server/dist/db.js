@@ -9,7 +9,7 @@ const pool = mysql2_1.default.createPool({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    port: Number(process.env.DB_PORT) || 3306,
+    port: Number(process.env.PORT) || 3306,
 });
 // Promisify the pool for easier async/await usage
 const promisePool = pool.promise();

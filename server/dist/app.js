@@ -12,33 +12,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const app = (0, express_1.default)();
-const port = 3000;
 const ws_1 = __importDefault(require("ws"));
 const http_1 = __importDefault(require("http"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const connectionController_1 = require("./controllers/connectionController");
+const gameController_1 = require("./controllers/gameController");
+const express_1 = __importDefault(require("express"));
 dotenv_1.default.config();
 const server = http_1.default.createServer();
 const wss = new ws_1.default.Server({ server });
+const app = (0, express_1.default)();
+app.head('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.status(200).end();
+}));
 wss.on('connection', (ws) => {
-    // Send a message to the client
-    ws.send(JSON.stringify({ message: 'Welcome to the game server!' }));
-    // Listen for messages from the client
-    ws.on('message', (message) => __awaiter(void 0, void 0, void 0, function* () {
-    }));
+    console.log('New client connected');
+    (0, connectionController_1.handleConnection)(ws);
+    // Listen for game-related messages
+    ws.on('message', (message) => {
+        try {
+            const parsedMessage = JSON.parse(message.toString()); // Ensure JSON parsing
+            (0, gameController_1.handleGameMessage)(ws, parsedMessage);
+        }
+        catch (error) {
+            console.error("Error parsing message:", error);
+        }
+    });
     // Handle client disconnection
     ws.on('close', () => {
         console.log('Client disconnected');
     });
 });
-// app.get('/', (req: Request, res: Response) => {
-//   res.send('Hello World from TypeScript Express!');
-// });
-// app.listen(port, () => {
-//   console.log(`Server is running on http://localhost:${port}`);
-// });
 // Start the server
-server.listen(process.env.PORT || 8080, () => {
+server.listen(process.env.PORT || 8000, () => {
     console.log(`Server listening on port ${process.env.PORT || 8080}`);
 });
