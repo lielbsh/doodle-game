@@ -22,13 +22,10 @@ dotenv_1.default.config();
 const server = http_1.default.createServer();
 const wss = new ws_1.default.Server({ server });
 wss.on('connection', (ws) => {
-    console.log('New client connected');
     // Send a message to the client
     ws.send(JSON.stringify({ message: 'Welcome to the game server!' }));
     // Listen for messages from the client
     ws.on('message', (message) => __awaiter(void 0, void 0, void 0, function* () {
-        const parsedMessage = JSON.parse(message.toString());
-        console.log('Received:', parsedMessage);
     }));
     // Handle client disconnection
     ws.on('close', () => {

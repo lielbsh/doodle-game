@@ -26,7 +26,6 @@ const GuessInput: React.FC<GuessInputProps> = ({
     // Create and start the timer
     const newTimer = new Timer(time, () => {
       setTimeUp(true);
-      console.log("time up!");
     });
     newTimer.start(setTimeLeft);
     setGuessingTimer(newTimer);

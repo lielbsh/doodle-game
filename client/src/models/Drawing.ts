@@ -26,10 +26,6 @@ export class Drawing {
             drawingData,
             word: this.word
         };
-    
-        // WebSocket communication 
-        console.log("Sending drawing data to server", drawingPayload);
-        // WebSocket.send(drawingPayload);  // Send this data to your backend
     }
   
     // Clear all strokes (e.g., if the user wants to start over)

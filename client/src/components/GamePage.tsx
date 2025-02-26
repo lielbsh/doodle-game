@@ -50,7 +50,6 @@ const GamePage: React.FC = () => {
         setRound(data.round);
         setWordToDraw(data.word);
         setGameState("START_GAME");
-        console.log("START_GAME");
 
         drawingTimeout = setTimeout(() => {
           setGameState((prevState) => {
@@ -59,7 +58,6 @@ const GamePage: React.FC = () => {
         }, 5000);
       } else if (data.type === "GUESSING_PHASE") {
         setGameState("GUESSING_PHASE");
-        console.log("GUESSING_PHASE");
         setSecondPlayerDrawing(JSON.parse(data.drawing));
       } else if (data.type === "ROUND_RESULT") {
         setRoundResult({
@@ -71,7 +69,6 @@ const GamePage: React.FC = () => {
         setShowRoundResult(true);
       } else if (data.type === "GAME_OVER") {
         setGameState("GAME_OVER");
-        console.log("GAME_OVER");
         setGameEndMessage(data.message);
         if (drawingTimeout) {
           clearTimeout(drawingTimeout);

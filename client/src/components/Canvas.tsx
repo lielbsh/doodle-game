@@ -61,7 +61,6 @@ const Canvas: React.FC<CanvasProps> = ({
     timer?.stop();
     const newTimer = new Timer(time, () => {
       setTimeUp(true);
-      console.log("Time's up! Sending drawing...");
     });
     newTimer.start(setTimeLeft);
     setTimer(newTimer);
@@ -156,7 +155,6 @@ const Canvas: React.FC<CanvasProps> = ({
       <div className="clear">
         <Eraser
           onClick={() => {
-            console.log("click");
             setDrawingStrokes([]);
             if (canvasRef.current && ctxRef.current) {
               const ctx = ctxRef.current;

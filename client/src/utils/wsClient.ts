@@ -15,12 +15,12 @@ class WebSocketClient {
   
       this.socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        console.log("Message from server:", data);
+        // console.log("Message from server:", data);
         onMessage(data);
       };
   
       this.socket.onclose = () => {
-        console.log("Disconnected from WebSocket server");
+        // console.log("Disconnected from WebSocket server");
       };
     }
   

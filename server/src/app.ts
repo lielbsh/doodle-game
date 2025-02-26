@@ -3,11 +3,18 @@ import http from 'http';
 import dotenv from 'dotenv';
 import { handleConnection } from './controllers/connectionController';
 import { handleGameMessage } from './controllers/gameController';
+import express, { Request, Response } from 'express';
 
 dotenv.config();
 
 const server = http.createServer();
 const wss = new WebSocket.Server({ server });
+
+const app = express();
+
+app.head('/', async (req: Request, res: Response) => {
+  res.status(200).end();
+});
 
 wss.on('connection', (ws) => {
   console.log('New client connected');

@@ -1,7 +1,6 @@
 import WebSocket from 'ws';
 import { activeGames, removeFromActiveGames, startGame } from './gameController';
 import { Player } from '../models/Player';
-import { GameSession } from '../models/GameSession';
 
 const waitingPlayers: Player[] = [];
 
@@ -28,7 +27,6 @@ export const handleConnection = (ws: WebSocket) => {
 const matchPlayers = (ws: WebSocket, playerId: string, playerName: string) => {
     const player = new Player(ws, playerId, playerName);
 
-    // Prevent duplicate waiting players
     if (waitingPlayers.some(p => p.id === playerId)) {
         return;
     }
@@ -51,7 +49,6 @@ const removePlayer = (ws: WebSocket) => {
     waitingPlayers.splice(playerIndex, 1);
   }
   
-  // Check if the player is part of an active game
   const game = activeGames.find((g) => g.player1.ws === ws || g.player2.ws === ws);
   if (game) {
     const opponent = game.player1.ws === ws ? game.player2 : game.player1;
