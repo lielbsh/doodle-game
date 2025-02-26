@@ -1,6 +1,6 @@
 import { Player } from "../models/Player";
 
-const WS_URL = "ws://localhost:8080";
+const WS_URL = "https://doodle-game-ewgw.onrender.com";
 
 class WebSocketClient {
     private socket: WebSocket | null = null;
