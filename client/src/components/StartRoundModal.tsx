@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/StartRoundModal.css";
+import { playSound } from "../utils/soundUtils";
 
 interface StartRoundModalProps {
   isOpen: boolean;
@@ -15,6 +16,8 @@ const StartRoundModal: React.FC<StartRoundModalProps> = ({
   time,
 }) => {
   if (!isOpen) return null;
+
+  playSound("sliding");
 
   return (
     <div className="overlay">

@@ -2,8 +2,8 @@ import React, { useRef, useEffect, useState } from "react";
 import { Timer } from "../models/Timer";
 import wsClient from "../utils/wsClient";
 import { Player } from "../models/Player";
+import { Eraser } from "lucide-react";
 
-// Define a Point type that optionally marks the beginning of a stroke.
 type Point = {
   x: number;
   y: number;
@@ -153,28 +153,49 @@ const Canvas: React.FC<CanvasProps> = ({
 
   return (
     <>
-      <canvas
-        ref={canvasRef}
-        className={`canvas ${
-          gameState === "DRAWING"
-            ? "drawing-phase"
-            : gameState === "GUESSING_PHASE"
-            ? "guessing-phase"
-            : ""
-        }`}
-        style={{
-          cursor:
-            gameState === "DRAWING" || "WAITING" ? "crosshair" : "default",
-          display: "block",
-          background: "white",
-        }}
-        onMouseDown={startDrawing}
-        onMouseMove={draw}
-        onMouseUp={stopDrawing}
-        onMouseLeave={stopDrawing}
-        width={1200}
-        height={500}
-      />
+      <div className="clear">
+        <Eraser
+          onClick={() => {
+            console.log("click");
+            setDrawingStrokes([]);
+            if (canvasRef.current && ctxRef.current) {
+              const ctx = ctxRef.current;
+              ctx.clearRect(
+                0,
+                0,
+                canvasRef.current.width,
+                canvasRef.current.height
+              );
+            }
+          }}
+        />
+      </div>
+      <div className="canvas-container">
+        <canvas
+          ref={canvasRef}
+          className={`canvas ${
+            gameState === "DRAWING"
+              ? "drawing-phase"
+              : gameState === "GUESSING_PHASE"
+              ? "guessing-phase"
+              : ""
+          }`}
+          style={{
+            cursor:
+              gameState === "DRAWING" || gameState === "WAITING"
+                ? "crosshair"
+                : "default",
+            display: "block",
+            background: "white",
+          }}
+          onMouseDown={startDrawing}
+          onMouseMove={draw}
+          onMouseUp={stopDrawing}
+          onMouseLeave={stopDrawing}
+          width={1200}
+          height={500}
+        />
+      </div>
     </>
   );
 };

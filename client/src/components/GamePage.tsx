@@ -44,7 +44,9 @@ const GamePage: React.FC = () => {
 
     const handleMessage = (data: any) => {
       if (data.type === "START_GAME") {
-        if (gameState === "WAITING") playSound("start");
+        if (gameState === "WAITING") {
+          playSound("start");
+        }
         setRound(data.round);
         setWordToDraw(data.word);
         setGameState("START_GAME");
@@ -105,7 +107,6 @@ const GamePage: React.FC = () => {
         playerId: player.id,
         playerName: player.name,
       });
-      // initilaize the states
     }
   };
 
@@ -201,7 +202,6 @@ const GamePage: React.FC = () => {
               />
             </div>
 
-            {/* Show round result feedback only if it's available */}
             {showRoundResult && (
               <div className="message-container">
                 {!roundResult.isCorrect && (
@@ -239,6 +239,3 @@ const GamePage: React.FC = () => {
 };
 
 export default GamePage;
-function useNevigate() {
-  throw new Error("Function not implemented.");
-}

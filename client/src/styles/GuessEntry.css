@@ -8,7 +8,7 @@
   
 .guess-input {
     font-family: 'Comic Sans MS', sans-serif; 
-    font-size: 18px;
+    font-size: 20px;
     padding: 12px 18px;
     border: 2px solid #ffcc00; 
     border-radius: 16px;
@@ -34,13 +34,11 @@
 
 .guess-input.correct {
   border-color: #4caf50; 
-  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
   background-color: #d4f8d4; 
 }
 
 .guess-input.wrong {
   border-color: #f44336; 
-  box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);
   background-color: #f8d4d4; 
 }
 

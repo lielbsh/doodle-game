@@ -103,7 +103,7 @@
 .waiting-message {
     font-size: 1.8rem;
     color: #211e19;
-    padding: 40px;
+    padding: 10px;
     font-family: 'Comic Sans MS';
 }
 
@@ -113,23 +113,38 @@
 }
 
 /* Canvas styling */
+.canvas-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 canvas {           
     margin-top: 10px;        
     border-radius: 16px;      
     background-color: white;   
-    border: 2px solid black;  
+    border: 2px solid #211e19;  
 }
 
 .canvas.drawing-phase {
-    border-color: #212121;
+    border-color: #1b2119;
 }
 
 .canvas.guessing-phase {
     border-color: #ffcc00;
 }
+
+.clear {
+  display: inline-block;
+  cursor: pointer;
+}
+.clear:hover {
+  opacity: 0.7; 
+  transition: opacity 0.1s ease;
+}
   
 .message-container {
-  margin-top: 20px;
+  margin-top: 10px;
   text-align: center;
   padding: 15px;
   border-radius: 10px;
@@ -137,7 +152,7 @@ canvas {
 }
 
 .feedback {
-  font-size: 18px;
+  font-size: 20px;
   padding: 10px;
   margin: 10px 0;
   border-radius: 8px;

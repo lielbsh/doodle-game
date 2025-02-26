@@ -95,18 +95,19 @@
 .score {
   font-size: 2rem;
   margin-bottom: 2rem;
+  margin-top: 2rem;
 }
 
 .buttons {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  margin-top: 2rem;
+  gap: 30px;
+  margin-top: 4rem;
 }
 
 .buttons button {
   padding: 15px 30px;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: bold;
   border-radius: 15px;
   cursor: pointer;
