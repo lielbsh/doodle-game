@@ -10,6 +10,7 @@ export class GameSession {
     guesses: Record<string, string>;
     score: number;
     onGameEnd: () => void;
+    pendingTimeout: NodeJS.Timeout | null = null;
 
     constructor(player1: Player, player2: Player, onGameEnd: () => void) {
         this.player1 = player1;
@@ -79,14 +80,15 @@ export class GameSession {
             guessedWord: guesses[player1.id],
             score: this.score,
         });
-
-        setTimeout(() => {
+ 
+        this.pendingTimeout = setTimeout(() => {
             if (this.round < 3) {
                 this.startNextRound();
             } else {
                 this.endGame();
-            } 
-        }, 6000);       
+            }
+            this.pendingTimeout = null; 
+        }, 5000);
     }
 
     startNextRound() {
