@@ -28,7 +28,8 @@ const GameOverModal: React.FC<GameOverProps> = ({
   }, [message]);
 
   const handleExit = () => {
-    wsClient.close(); // Optional: close WebSocket if needed
+    playSound("click");
+    wsClient.close();
     navigate("/");
   };
 

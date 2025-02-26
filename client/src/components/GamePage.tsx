@@ -40,17 +40,24 @@ const GamePage: React.FC = () => {
   useEffect(() => {
     if (!player) return;
 
+    let drawingTimeout: NodeJS.Timeout | null = null; // Store timeout reference
+
     const handleMessage = (data: any) => {
       if (data.type === "START_GAME") {
-        if (gameState === "WAITING") {
-          playSound("start");
-        }
+        if (gameState === "WAITING") playSound("start");
         setRound(data.round);
         setWordToDraw(data.word);
         setGameState("START_GAME");
-        setTimeout(() => setGameState("DRAWING"), 5000);
+        console.log("START_GAME");
+
+        drawingTimeout = setTimeout(() => {
+          setGameState((prevState) => {
+            return prevState === "GAME_OVER" ? "GAME_OVER" : "DRAWING";
+          });
+        }, 5000);
       } else if (data.type === "GUESSING_PHASE") {
         setGameState("GUESSING_PHASE");
+        console.log("GUESSING_PHASE");
         setSecondPlayerDrawing(JSON.parse(data.drawing));
       } else if (data.type === "ROUND_RESULT") {
         setRoundResult({
@@ -62,9 +69,24 @@ const GamePage: React.FC = () => {
         setShowRoundResult(true);
       } else if (data.type === "GAME_OVER") {
         setGameState("GAME_OVER");
+        console.log("GAME_OVER");
         setGameEndMessage(data.message);
+        if (drawingTimeout) {
+          clearTimeout(drawingTimeout);
+          drawingTimeout = null;
+        }
       } else if (data.type === "WAITING") {
         setGameState("WAITING");
+        setRound(1);
+        setShowRoundResult(false);
+        setRoundResult({
+          otherPlayerWord: "",
+          guessedWord: "",
+          isCorrect: false,
+          score: 0,
+        });
+        setSecondPlayerDrawing(null);
+        setTimeLeft(time);
       }
     };
 
@@ -72,6 +94,7 @@ const GamePage: React.FC = () => {
 
     return () => {
       wsClient.close();
+      if (drawingTimeout) clearTimeout(drawingTimeout);
     };
   }, [player]);
 
@@ -82,6 +105,7 @@ const GamePage: React.FC = () => {
         playerId: player.id,
         playerName: player.name,
       });
+      // initilaize the states
     }
   };
 
