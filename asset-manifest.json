@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/doodle-game/static/css/main.24ea5cdd.css",
-    "main.js": "/doodle-game/static/js/main.497c2725.js",
+    "main.js": "/doodle-game/static/js/main.65a89ac0.js",
     "static/js/215.583fcfbb.chunk.js": "/doodle-game/static/js/215.583fcfbb.chunk.js",
     "index.html": "/doodle-game/index.html",
     "main.24ea5cdd.css.map": "/doodle-game/static/css/main.24ea5cdd.css.map",
-    "main.497c2725.js.map": "/doodle-game/static/js/main.497c2725.js.map",
+    "main.65a89ac0.js.map": "/doodle-game/static/js/main.65a89ac0.js.map",
     "215.583fcfbb.chunk.js.map": "/doodle-game/static/js/215.583fcfbb.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.24ea5cdd.css",
-    "static/js/main.497c2725.js"
+    "static/js/main.65a89ac0.js"
   ]
 }
