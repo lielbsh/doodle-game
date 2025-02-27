@@ -13,6 +13,7 @@ const wss = new WebSocket.Server({ server });
 
 
 app.head('/', async (req: Request, res: Response) => {
+  console.log('robot is running')
   res.status(200).end();
 });
 
