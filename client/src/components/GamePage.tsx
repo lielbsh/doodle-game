@@ -20,7 +20,7 @@ const GamePage: React.FC = () => {
   const [gameState, setGameState] = useState<string>("WAITING");
   const [showRoundResult, setShowRoundResult] = useState<boolean>(false);
   const [round, setRound] = useState<number>(1);
-  const time = 7;
+  const time = 15;
   const [timeLeft, setTimeLeft] = useState<number>(time);
   const [secondPlayerDrawing, setSecondPlayerDrawing] = useState<
     { x: number; y: number }[] | null

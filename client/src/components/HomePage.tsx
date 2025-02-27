@@ -71,7 +71,11 @@ const HomePage: React.FC = () => {
           )}
         </div>
       </main>
-      <img src="/pencil.png" className="pencil-image" alt="Pencil" />
+      <img
+        className="pencil-image"
+        src={`${process.env.PUBLIC_URL}/pencil.png`}
+        alt="Pencil"
+      />
     </div>
   );
 };
