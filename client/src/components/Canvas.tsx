@@ -168,7 +168,7 @@ const Canvas: React.FC<CanvasProps> = ({
         }}
         disabled={gameState === "GUESSING_PHASE"} // Disable button when in "GUESSING_PHASE"
       >
-        <Eraser />
+        <Eraser size={35} />
       </button>
 
       <div className="canvas-container">

@@ -23,7 +23,10 @@
     flex-direction: column;
     gap: 8px;
     width: 120px;
-    font-size: 1.2rem;
+}
+
+.player-info p {
+  font-size: 1.4rem;
 }
 
 .exit-button {
