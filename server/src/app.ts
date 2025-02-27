@@ -7,10 +7,10 @@ import express, { Request, Response } from 'express';
 
 dotenv.config();
 
-const server = http.createServer();
+const app = express();
+const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-const app = express();
 
 app.head('/', async (req: Request, res: Response) => {
   res.status(200).end();
