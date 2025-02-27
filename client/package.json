@@ -28,7 +28,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "https://lielbsh.github.io/doodle-game/",
+  "homepage": "https://lielbsh.github.io/doodle-game",
   "eslintConfig": {
     "extends": [
       "react-app",
