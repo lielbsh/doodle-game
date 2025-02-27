@@ -6,40 +6,76 @@
     min-height: 100vh;
     background-color: #fff6e5;
     font-family: 'Comic Sans MS', cursive;
+    position: relative; 
 }
   
 .app-header {
     width: 100%;
+    max-height: min-content;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 0px;
+    margin-top: -10px;
+    z-index: 3;
 }
   
 .help-btn {
-    font-size: 2rem;
-    padding: 10px;
+    font-size: 4rem;
+    background-color: transparent;
+    border: none;
+    color:#f7d734;
+    font-weight: bolder;
+    -webkit-text-stroke: 3px #211e19;
+    text-shadow: 2px 4px #fc6daf;
 }
   
 .main-content {
     display: flex;
     flex-direction: column;
-    justify-content:center;
     align-items: center;
     flex-grow: 1; 
     gap: 60px; 
     width: 100%;
+    z-index: 1;
+}
+
+.pencil-image { 
+    position: absolute;
+    bottom: 5vh;
+    right: 5vw;
+    width: 20%; 
+    max-width: 200px;
+    height: auto; 
+    z-index: 0;
 }
   
-.headline h1 {
-    font-size: 3.5rem;
+.hero-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+}
+
+.hero-section h1 {
+    font-size: 3.2rem;
+    align-items: center;
     color: #211e19;
     text-shadow: 2px 2px #fc6daf;
     margin: 0;
 }
+
+p {
+    font-size: 2rem;
+    color: #211e19;
+    margin: 0;
+}
   
-.button {
-    padding: 20px 50px;
+.bn-yellow {
+    background-color: #fadc47;
+    color: #211e19;
+    padding: 15px 40px;
     font-size: 1.8rem;
     font-weight: bold;
     border: none;
@@ -48,19 +84,12 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0px 8px 0 #fc6daf;
     color: #211e19;
-}
-  
-.bn-yellow {
-    background-color: #f7d734;
-    color: #211e19;
+    margin-top: 0px;
 }
 
-.bn-pink {
-    background-color: rgb(247, 160, 228);
+.bn-green {
+    background-color: rgb(141, 245, 128);
     color: #211e19;
-}
-
-.start-button {
     padding: 8px 20px;
     font-size: 1.8rem;
     font-weight: bold;
@@ -69,11 +98,6 @@
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0px 8px 0 rgb(123, 211, 111);
-    color: #211e19;
-}
-
-.bn-green {
-    background-color: rgb(141, 245, 128);
     color: #211e19;
 }
   
@@ -96,7 +120,6 @@ input {
     border-radius: 25px;
     width: 100%;
 }
-  
 
 @media (max-width: 600px) {
     .headline h1 {
@@ -115,7 +138,6 @@ input {
         font-size: 1.2rem;
         }
 }
-
 
 /* Help Modal */
 .help-modal {
@@ -156,7 +178,6 @@ input {
     background-color: #fc6daf;
     color: #fff;
     border: none;
-    padding: 10px 30px;
     font-size: 1.5rem;
     border-radius: 20px;
     cursor: pointer;

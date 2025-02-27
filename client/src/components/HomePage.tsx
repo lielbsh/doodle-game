@@ -22,7 +22,7 @@ const HomePage: React.FC = () => {
   return (
     <div className="container">
       <header className="app-header">
-        <button className="button bn-pink help-btn" onClick={toggleInfoModal}>
+        <button className="help-btn" onClick={toggleInfoModal}>
           ?
         </button>
         {isModalOpen && (
@@ -33,7 +33,7 @@ const HomePage: React.FC = () => {
               playSound("click");
             }}
           >
-            <LogOut size={30} />
+            <LogOut size={35} />
           </button>
         )}
       </header>
@@ -54,13 +54,14 @@ const HomePage: React.FC = () => {
       )}
 
       <main className="main-content">
-        <div className="headline">
-          <h1>Welcome to the Doodle Game!</h1>
+        <div className="hero-section">
+          <h1>Welcome to the Doodle Game</h1>
+          <p>Draw, guess, and have fun!</p>
         </div>
 
         <div className="button-container">
           {!isModalOpen && (
-            <button className="button bn-yellow" onClick={openModal}>
+            <button className="bn-yellow" onClick={openModal}>
               Start Play
             </button>
           )}
@@ -70,6 +71,7 @@ const HomePage: React.FC = () => {
           )}
         </div>
       </main>
+      <img src="/pencil.png" className="pencil-image" alt="Pencil" />
     </div>
   );
 };

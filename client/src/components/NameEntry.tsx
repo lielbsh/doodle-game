@@ -28,11 +28,7 @@ const NameEntryModal: React.FC<NameEntryModalProps> = ({ onClose }) => {
         placeholder="Your name"
         onKeyDown={(e) => e.key === "Enter" && handleConfirmName()}
       />
-      <button
-        type="submit"
-        onClick={handleConfirmName}
-        className="start-button bn-green"
-      >
+      <button type="submit" onClick={handleConfirmName} className="bn-green">
         Start
       </button>
     </div>
