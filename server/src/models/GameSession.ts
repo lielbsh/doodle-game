@@ -49,7 +49,7 @@ export class GameSession {
     }
 
     handleGuess(player: Player, guess: string) {
-        this.guesses[player.id] = guess;
+        this.guesses[player.id] = guess.toLowerCase();
 
         if (Object.keys(this.guesses).length === 2) {
             console.log("Both players submitted guesses.");

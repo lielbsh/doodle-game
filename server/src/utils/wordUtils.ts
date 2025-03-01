@@ -47,7 +47,7 @@ const wordsForGame =  {
         'snail',
         'beach',
         'Bunny',
-        'coffee',
+        'coffe',
         'Giraffe',
         'Bridge',
         'Candle',

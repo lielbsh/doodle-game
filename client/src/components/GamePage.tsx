@@ -20,7 +20,7 @@ const GamePage: React.FC = () => {
   const [gameState, setGameState] = useState<string>("WAITING");
   const [showRoundResult, setShowRoundResult] = useState<boolean>(false);
   const [round, setRound] = useState<number>(1);
-  const time = 15;
+  const time = 20;
   const [timeLeft, setTimeLeft] = useState<number>(time);
   const [secondPlayerDrawing, setSecondPlayerDrawing] = useState<
     { x: number; y: number }[] | null
@@ -207,7 +207,8 @@ const GamePage: React.FC = () => {
                   </p>
                 )}
 
-                {roundResult.guessedWord === wordToDraw ? (
+                {roundResult.guessedWord.toLowerCase() ===
+                wordToDraw.toLowerCase() ? (
                   <p className="feedback correct">
                     Great job! The other player understood your drawing.
                   </p>

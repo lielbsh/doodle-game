@@ -34,12 +34,12 @@
 
 .guess-input.correct {
   border-color: #4caf50; 
-  background-color: #d4f8d4; 
+  background-color: #bdf8bd; 
 }
 
 .guess-input.wrong {
   border-color: #f44336; 
-  background-color: #f8d4d4; 
+  background-color: #f5bdbd; 
 }
 
 .guess-input:focus {
