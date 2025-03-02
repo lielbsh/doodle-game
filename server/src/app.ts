@@ -14,7 +14,7 @@ const wss = new WebSocket.Server({ server });
 
 app.head('/', async (req: Request, res: Response) => {
   console.log('robot is running')
-  res.status(200).end();
+  res.status(200).send('ok');
 });
 
 wss.on('connection', (ws) => {
@@ -35,6 +35,10 @@ wss.on('connection', (ws) => {
   // Handle client disconnection
   ws.on('close', () => {
     console.log('Client disconnected');
+  });
+
+  ws.on('error', (error) => {
+    console.error('WebSocket error:', error);
   });
 });
 
